@@ -2,7 +2,9 @@
 
 ## Current task
 
-Implement the first functional version of the Launch Planner.
+Rebuild the Operations page from scratch and implement the first real version of the Operations Workspace.
+
+The current Operations page should be treated as temporary and should be fully replaced.
 
 The application already supports:
 
@@ -13,8 +15,9 @@ The application already supports:
 - active business context
 - Business Builder
 - Business Simulator
+- Launch Planner with task creation, editing, deletion, and phase collapsing
 
-Now the next step is to help users turn a business concept into an executable launch plan.
+Now the next step is to create a real workspace for managing day-to-day business operations.
 
 Before implementing, read:
 
@@ -25,20 +28,40 @@ Before implementing, read:
 
 # Goal
 
-Create the first working version of the Launch Planner.
+Create the first functional version of the Operations Workspace.
 
-The Launch Planner should help users organize the steps required to launch a business.
+This page should help the user manage the ongoing operational side of a business after launch planning.
 
-Users should be able to:
+The Operations page should feel like:
 
-- view a launch plan
-- track launch readiness
-- manage launch tasks and milestones
-- see progress across major launch areas
+- a business operating center
+- a day-to-day execution workspace
+- a place to monitor recurring work, operational issues, and process health
 
-This should feel like a launch preparation workspace, not a generic to-do list.
+It should NOT feel like:
 
-The Launch Planner should use the active business and its existing business category and business model as the starting point.
+- a generic admin dashboard
+- a simple to-do list
+- a project management clone
+- a leftover placeholder page
+
+The current Operations page should be replaced with a cleaner, more product-like, more structured implementation.
+
+---
+
+# Core product purpose
+
+The Operations Workspace should help a business answer questions such as:
+
+- What needs to happen today or this week to keep the business running?
+- Which recurring operational tasks are coming up?
+- Which operational areas are healthy and which are at risk?
+- What issues or bottlenecks need attention?
+- Which processes are currently active or overloaded?
+
+This is not a full ERP or project management system.
+
+This is version 1 of an SMB operations workspace.
 
 ---
 
@@ -46,256 +69,320 @@ The Launch Planner should use the active business and its existing business cate
 
 Implement:
 
-- launch planner data structure
-- Redux state for launch planning
-- Launch Planner page
-- launch phases or milestone groups
-- launch task list with statuses
-- readiness summary
+- a complete redesign of the Operations page
+- operations data structure
+- Redux state for operations
+- operations overview section
+- recurring tasks section
+- process groups / operational areas
+- issues / bottlenecks section
 - integration with the active business
+- category-aware default operations content
 
 Use mock data only.
 
 ---
 
+# Important reset requirement
+
+The existing Operations page should be cleaned up and rebuilt from scratch.
+
+Requirements:
+
+- remove the current placeholder-style structure
+- remove any temporary layout that does not fit the new operations workspace
+- design the page around the actual product purpose
+- keep reusable pieces only if they clearly fit the new architecture
+
+Do not just patch the existing page.
+Do not simply add more cards onto the old version.
+Re-approach the page as a real product surface.
+
+---
+
 # Product behavior
 
-The Launch Planner should help users prepare for launch across several business areas.
+The Operations Workspace should represent how a business runs after setup and launch.
 
-The planner should support practical launch planning, such as:
+It should support operational management across a few core dimensions:
 
-- business setup
-- legal and administrative readiness
-- product or service readiness
-- operations readiness
-- marketing readiness
-- launch execution readiness
+- recurring work
+- process visibility
+- issue tracking
+- operational status
+- short-term execution priorities
 
-The exact task content may vary by business category.
+The page should use the active business and its category as context.
 
-Do not implement project management complexity yet.
-
-This is version 1.
+Different business categories may have different operational structures and default tasks.
 
 ---
 
-# Core planner concept
+# Main sections
 
-The Launch Planner should organize launch preparation into structured areas.
-
-Suggested model:
-
-- phases or milestone groups
-- tasks inside each phase
-- status per task
-- readiness summary based on task completion
-
-At minimum, task statuses should support:
-
-- not started
-- in progress
-- completed
-
-Optional:
-- blocked
-
-This is not required if it complicates v1 too much.
+The Operations page should contain at least these sections.
 
 ---
 
-# Planner sections
+## 1. Operations Overview
 
-The Launch Planner page should contain at least these sections.
+Top summary area for the active business.
 
----
-
-## 1. Launch readiness summary
-
-A top-level summary of progress.
+This section should quickly communicate the current operational state.
 
 At minimum include:
 
-- overall readiness percentage
-- number of completed tasks
-- number of remaining tasks
-- current phase or nearest milestone
-- category or business type reference
+- operational health summary
+- number of open issues
+- number of recurring tasks due soon
+- number of completed recurring tasks in the current period
+- key focus area or attention-needed area
 
-This should help the user quickly understand launch status.
-
----
-
-## 2. Milestone groups or phases
-
-Group launch work into a small number of structured phases.
-
-Suggested phases:
-
-- Foundation
-- Offer & Setup
-- Operations Readiness
-- Marketing Readiness
-- Launch Execution
-
-You may rename these if needed, but the structure should feel practical and product-like.
-
-Each phase should contain a set of tasks.
+This section should feel like an execution summary, not a financial dashboard.
 
 ---
 
-## 3. Task management view
+## 2. Operational Areas / Process Groups
 
-Users should be able to view and update launch tasks.
+Represent the main areas of ongoing operations.
 
-Each task should support at least:
+Examples:
+
+- Sales Operations
+- Service Delivery
+- Inventory / Supply
+- Customer Support
+- Team Coordination
+- Finance Admin
+
+The exact process groups can vary by category, but the structure should feel relevant to the active business.
+
+Each operational area should include useful lightweight information such as:
+
+- area name
+- short purpose
+- status or health indicator
+- task count or issue count
+- optional owner or responsibility label
+
+This should help the user understand where work is happening.
+
+---
+
+## 3. Recurring Tasks
+
+This is one of the most important parts of the page.
+
+Users should be able to manage recurring operational work.
+
+Examples:
+
+- daily opening checklist
+- weekly inventory check
+- supplier follow-up
+- payroll preparation
+- customer follow-up review
+- equipment inspection
+- weekly performance review
+
+Each recurring task should support at least:
 
 - title
 - short description
+- frequency
 - status
-- optional owner
-- optional due timing label
-- related phase
+- due label or next due label
+- related operational area
 
-Users should be able to change task status in the UI.
+Support at minimum:
 
-At minimum, support updating status only.
+- viewing recurring tasks
+- updating task status
+- creating recurring tasks
+- editing recurring tasks
+- deleting recurring tasks
 
-No need for deep project management logic.
+Keep this practical and lightweight.
+
+Do not implement advanced scheduling logic.
 
 ---
 
-## 4. Milestone or timeline cues
+## 4. Issues / Bottlenecks
 
-The planner should show progression toward launch.
+The page should support tracking operational problems.
 
-At minimum:
+This is not a bug tracker.
+It is a business operations issue list.
 
-- show phases in order
-- show progress per phase
-- make it clear what is upcoming vs complete
+Each issue should support at least:
 
-This does not need to be a full calendar or Gantt chart.
+- title
+- short description
+- severity
+- status
+- related operational area
+- optional owner
 
-Simple timeline or milestone cues are enough.
+Examples:
+
+- delayed supplier shipments
+- low customer response rate
+- insufficient staffing on weekends
+- unstable fulfillment turnaround
+- too many missed follow-ups
+
+Support:
+
+- viewing issues
+- creating issues
+- editing issues
+- deleting issues
+- changing status
+
+Keep the structure simple.
+
+---
+
+## 5. Near-term focus
+
+Include a section that helps the user understand immediate execution priorities.
+
+This can be a lightweight section showing things such as:
+
+- due today
+- due this week
+- blocked items
+- highest-priority issues
+
+This does not need a complex prioritization engine.
+
+Simple derived summaries are enough.
 
 ---
 
 # Category awareness
 
-The Launch Planner should be aware of business category.
+The Operations Workspace should be category-aware.
 
-Different business categories should have different default launch tasks.
+Different business categories should have different default operational areas and tasks.
 
 Examples:
 
 ### Restaurant / Cafe
-- finalize menu
-- source suppliers
-- configure POS
-- hire staff
-- prepare opening promotion
+Operational areas:
+- Front of House
+- Kitchen
+- Inventory
+- Staffing
+- Supplier Coordination
+
+Recurring tasks:
+- opening checklist
+- stock check
+- supplier order review
+- cleaning verification
+
+Issues:
+- ingredient shortage
+- staffing gaps
+- order delays
 
 ### SaaS
-- finalize MVP scope
-- complete onboarding flow
-- prepare pricing page
-- set up support workflow
-- launch acquisition campaign
+Operational areas:
+- Customer Support
+- Product Operations
+- Sales Ops
+- Marketing Ops
+- Finance Admin
+
+Recurring tasks:
+- support queue review
+- product analytics review
+- lead pipeline review
+- churn check
+
+Issues:
+- trial-to-paid conversion drop
+- support backlog
+- onboarding friction
 
 ### Consulting / Agency
-- define service packages
-- prepare proposal templates
-- create lead pipeline
-- set up invoicing
-- prepare website or portfolio
+Operational areas:
+- Client Delivery
+- Sales Pipeline
+- Team Scheduling
+- Finance Admin
 
-### Retail Store
-- source inventory
-- prepare store layout
-- set up payments
-- launch local promotion
-- train staff
+Recurring tasks:
+- client check-ins
+- proposal follow-up
+- invoice tracking
+- team capacity review
 
-Category variation does not need to be extremely deep in v1, but the system should clearly feel category-aware.
+Issues:
+- delayed deliverables
+- pipeline slowdown
+- overload on key team members
 
----
-
-# Readiness logic
-
-The Launch Planner should calculate simple readiness indicators.
-
-Examples:
-
-- overall completion percentage
-- phase completion percentage
-- completed vs remaining tasks
-
-This logic can remain simple:
-
-completed tasks / total tasks
-
-You may also surface a simple “launch confidence” summary if useful, but this is optional.
-
----
-
-# Integration with existing product areas
-
-The Launch Planner should connect conceptually to earlier product surfaces.
-
-Examples:
-
-- business category informs default tasks
-- builder data may inform launch priorities
-- simulator insights may later inform launch timing
-
-For this version, integration can remain light.
-
-The important thing is that the planner feels connected to the active business rather than standalone.
+Category adaptation does not need to be deeply complex in v1, but it should clearly exist.
 
 ---
 
 # UX expectations
 
-The Launch Planner should feel like a structured launch workspace.
+The Operations page must feel intentional and structured.
 
-It should not feel like:
+Preferred UX direction:
 
-- a plain checklist app
-- a generic task board
-- an enterprise PM tool
+- clean top-level summary
+- clear separation between recurring work, operations areas, and issues
+- easy scanning
+- practical editing flows
+- no clutter
+- no excessive enterprise complexity
 
-It should feel like:
+The experience should feel like a founder/operator control center.
 
-- a founder launch roadmap
-- a business readiness planner
-- an execution preparation workspace
+The page should be significantly better than a placeholder page and should look like a real core module of the product.
 
-Preferred layout:
+---
 
-- top summary / readiness section
-- milestone or phase overview
-- task list grouped by phase
-- ability to update task status easily
+# Interaction expectations
 
-Keep the interface structured and product-like.
+At minimum, support interactions for:
+
+- creating recurring tasks
+- editing recurring tasks
+- deleting recurring tasks
+- updating recurring task status
+- creating issues
+- editing issues
+- deleting issues
+- updating issue status
+
+If useful, support collapsing sections or grouping, but only if it improves clarity.
+
+Do not add unnecessary interaction complexity.
 
 ---
 
 # State management
 
-Add state for launch planning.
+Add Redux state for operations.
 
-Responsibilities may include:
+The state should support:
 
-- launch plan per business
-- phases
-- tasks
-- readiness summary
-- active business relationship
+- operations data per business
+- operational areas
+- recurring tasks
+- issues
+- derived summary values
+- active business integration
 
-Keep this practical.
+Keep it practical.
 
-Avoid overengineering a full task platform.
+Avoid building a full workflow engine.
 
 ---
 
@@ -305,24 +392,49 @@ Suggested structure:
 
 src/features/
 
-launchPlanner/
-- LaunchPlannerPage.tsx
+operations/
+- OperationsPage.tsx
 - slice.ts
 - types.ts
 - selectors.ts
 - utils.ts
+- mock.ts
 
 components/
-- ReadinessSummary.tsx
-- PhaseProgress.tsx
-- LaunchTaskList.tsx
-- LaunchTaskCard.tsx
+- OperationsOverview.tsx
+- OperationalAreaCard.tsx
+- RecurringTasksSection.tsx
+- RecurringTaskCard.tsx
+- IssuesSection.tsx
+- IssueCard.tsx
+- FocusSummary.tsx
 
-Keep logic modular.
+Keep logic separate from presentation where possible.
 
-Keep UI separate from state logic where possible.
+Avoid one large page component doing everything.
 
-Avoid large monolithic components.
+---
+
+# Design direction
+
+The page should be visually calmer and more operational than the Dashboard.
+
+It should feel like:
+
+- structured
+- practical
+- execution-focused
+- readable
+- modular
+
+Avoid:
+
+- overly flashy UI
+- too many small meaningless widgets
+- excessive charts
+- generic KPI spam
+
+Prioritize clarity and usefulness.
 
 ---
 
@@ -331,17 +443,18 @@ Avoid large monolithic components.
 Do NOT implement:
 
 - backend persistence
-- API integration
+- APIs
 - authentication
-- calendars
 - notifications
-- drag and drop boards
-- team collaboration logic
-- dependencies engine
-- full project management features
+- calendars
+- advanced automation rules
+- drag and drop workflow builders
+- dependency engines
+- team permissions
+- enterprise ERP complexity
 - unnecessary libraries
 
-Focus on a clear v1 Launch Planner.
+Focus on a strong Operations Workspace v1.
 
 ---
 
@@ -349,13 +462,14 @@ Focus on a clear v1 Launch Planner.
 
 This task is complete when:
 
-- Launch Planner page exists
-- planner is connected to the active business
-- launch phases or milestone groups exist
-- tasks are shown and grouped clearly
-- task statuses can be updated
-- readiness summary is calculated and displayed
-- category-aware default tasks exist
+- the existing Operations page has been replaced with a new implementation
+- the new page feels like a real operations workspace
+- operations overview exists
+- operational areas are shown
+- recurring tasks are manageable
+- issues / bottlenecks are manageable
+- the page is connected to the active business
+- category-aware default operations content exists
 - architecture is modular and scalable
 
-The result should feel like the first real launch execution workspace inside the Business Operating System.
+The result should feel like the first real operational control center inside the Business Operating System.

@@ -12,6 +12,7 @@ import {
   RocketLaunch as RocketIcon,
   ArrowForward as ArrowIcon,
   CalendarToday as CalendarIcon,
+  SettingsOutlined as OpsIcon,
 } from '@mui/icons-material';
 import { alpha, useTheme } from '@mui/material/styles';
 import PageHeader from '../../shared/components/PageHeader';
@@ -230,6 +231,46 @@ const LaunchPlannerPage: React.FC = () => {
           </Box>
         }
       />
+
+      {/* Operations lifecycle callout */}
+      {readiness.overallPercent >= 60 && (
+        <Box
+          mb={2.5}
+          px={2}
+          py={1.5}
+          borderRadius={2}
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          gap={2}
+          bgcolor={alpha(theme.palette.success.main, 0.04)}
+          border={`1px solid ${alpha(theme.palette.success.main, 0.2)}`}
+        >
+          <Box display="flex" alignItems="center" gap={1.5}>
+            <OpsIcon sx={{ fontSize: 18, color: 'success.main', flexShrink: 0 }} />
+            <Box>
+              <Typography variant="body2" fontWeight={600} color="text.primary">
+                {readiness.overallPercent >= 80
+                  ? 'Launch-ready — Operations workspace is active'
+                  : 'Getting close — start setting up day-to-day operations'}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Completed launch tasks can be promoted to recurring operational work in Operations.
+              </Typography>
+            </Box>
+          </Box>
+          <Button
+            size="small"
+            variant="outlined"
+            color="success"
+            endIcon={<ArrowIcon sx={{ fontSize: 14 }} />}
+            onClick={() => navigate('/operations')}
+            sx={{ borderRadius: 2, flexShrink: 0, fontSize: '0.75rem', height: 30 }}
+          >
+            Go to Operations
+          </Button>
+        </Box>
+      )}
 
       {/* Launch-ready banner */}
       {isReadyToLaunch && (
