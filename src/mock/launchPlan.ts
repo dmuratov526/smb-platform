@@ -1,0 +1,97 @@
+import { LaunchPlan } from '../types';
+
+export const mockLaunchPlans: LaunchPlan[] = [
+  {
+    businessId: 'biz-001',
+    targetLaunchDate: '2024-04-15',
+    readinessScore: 72,
+    milestones: [
+      {
+        id: 'ms-001',
+        title: 'Legal & Licensing',
+        targetDate: '2024-03-20',
+        status: 'completed',
+        taskIds: ['task-001', 'task-002', 'task-003'],
+      },
+      {
+        id: 'ms-002',
+        title: 'Location & Buildout',
+        targetDate: '2024-04-01',
+        status: 'in_progress',
+        taskIds: ['task-004', 'task-005', 'task-006'],
+      },
+      {
+        id: 'ms-003',
+        title: 'Equipment & Supply Chain',
+        targetDate: '2024-04-05',
+        status: 'in_progress',
+        taskIds: ['task-007', 'task-008'],
+      },
+      {
+        id: 'ms-004',
+        title: 'Hiring & Training',
+        targetDate: '2024-04-10',
+        status: 'upcoming',
+        taskIds: ['task-009', 'task-010', 'task-011'],
+      },
+      {
+        id: 'ms-005',
+        title: 'Marketing & Soft Launch',
+        targetDate: '2024-04-15',
+        status: 'upcoming',
+        taskIds: ['task-012', 'task-013'],
+      },
+    ],
+    tasks: [
+      { id: 'task-001', title: 'Register business entity (LLC)', status: 'completed', priority: 'critical', category: 'Legal', dueDate: '2024-03-10' },
+      { id: 'task-002', title: 'Obtain food service permit', status: 'completed', priority: 'critical', category: 'Legal', dueDate: '2024-03-15' },
+      { id: 'task-003', title: 'Open business bank account', status: 'completed', priority: 'high', category: 'Legal', dueDate: '2024-03-20' },
+      { id: 'task-004', title: 'Sign lease agreement', status: 'completed', priority: 'critical', category: 'Location', dueDate: '2024-03-01' },
+      { id: 'task-005', title: 'Complete interior buildout', status: 'in_progress', priority: 'critical', category: 'Location', dueDate: '2024-04-01', dependsOn: ['task-004'] },
+      { id: 'task-006', title: 'Install POS system', status: 'in_progress', priority: 'high', category: 'Location', dueDate: '2024-04-01', dependsOn: ['task-005'] },
+      { id: 'task-007', title: 'Purchase and install espresso equipment', status: 'in_progress', priority: 'critical', category: 'Equipment', dueDate: '2024-04-03', dependsOn: ['task-005'] },
+      { id: 'task-008', title: 'Set up supplier accounts (coffee, dairy, food)', status: 'completed', priority: 'high', category: 'Supply Chain', dueDate: '2024-03-28' },
+      { id: 'task-009', title: 'Hire head barista / manager', status: 'completed', priority: 'critical', category: 'Hiring', dueDate: '2024-03-25' },
+      { id: 'task-010', title: 'Hire remaining staff (3 baristas)', status: 'in_progress', priority: 'high', category: 'Hiring', dueDate: '2024-04-05', dependsOn: ['task-009'] },
+      { id: 'task-011', title: 'Conduct staff training week', status: 'pending', priority: 'high', category: 'Hiring', dueDate: '2024-04-10', dependsOn: ['task-010'] },
+      { id: 'task-012', title: 'Launch social media accounts and pre-open campaign', status: 'in_progress', priority: 'medium', category: 'Marketing', dueDate: '2024-04-08' },
+      { id: 'task-013', title: 'Host soft launch / friends & family event', status: 'pending', priority: 'medium', category: 'Marketing', dueDate: '2024-04-12', dependsOn: ['task-011', 'task-012'] },
+    ],
+  },
+  {
+    businessId: 'biz-002',
+    targetLaunchDate: '2024-05-01',
+    readinessScore: 38,
+    milestones: [
+      {
+        id: 'ms-010',
+        title: 'Business Setup',
+        targetDate: '2024-03-30',
+        status: 'in_progress',
+        taskIds: ['task-020', 'task-021'],
+      },
+      {
+        id: 'ms-011',
+        title: 'Inventory & Suppliers',
+        targetDate: '2024-04-15',
+        status: 'upcoming',
+        taskIds: ['task-022', 'task-023'],
+      },
+      {
+        id: 'ms-012',
+        title: 'Store Launch',
+        targetDate: '2024-05-01',
+        status: 'upcoming',
+        taskIds: ['task-024', 'task-025'],
+      },
+    ],
+    tasks: [
+      { id: 'task-020', title: 'Register business entity', status: 'completed', priority: 'critical', category: 'Legal', dueDate: '2024-03-20' },
+      { id: 'task-021', title: 'Sign retail lease', status: 'in_progress', priority: 'critical', category: 'Location', dueDate: '2024-03-30' },
+      { id: 'task-022', title: 'Source initial inventory from suppliers', status: 'pending', priority: 'high', category: 'Inventory', dueDate: '2024-04-10', dependsOn: ['task-021'] },
+      { id: 'task-023', title: 'Set up e-commerce store', status: 'in_progress', priority: 'high', category: 'Digital', dueDate: '2024-04-15' },
+      { id: 'task-024', title: 'Store fitout and visual merchandising', status: 'pending', priority: 'high', category: 'Location', dueDate: '2024-04-25', dependsOn: ['task-021'] },
+      { id: 'task-025', title: 'Grand opening marketing campaign', status: 'pending', priority: 'medium', category: 'Marketing', dueDate: '2024-04-28', dependsOn: ['task-024'] },
+    ],
+  },
+];

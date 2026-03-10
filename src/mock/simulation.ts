@@ -1,0 +1,81 @@
+import { SimulationScenario } from '../types';
+
+export const mockSimulationScenarios: SimulationScenario[] = [
+  {
+    id: 'sim-001',
+    businessId: 'biz-001',
+    name: 'Base Case',
+    description: 'Current operating assumptions with no changes.',
+    inputs: {
+      revenueMultiplier: 1.0,
+      costMultiplier: 1.0,
+      marketingBudget: 1200,
+      staffingCost: 14000,
+      pricePerUnit: 6.5,
+      expectedDemand: 3800,
+      rentCost: 8500,
+    },
+    outputs: {
+      projectedRevenue: 41000,
+      projectedExpenses: 34250,
+      projectedProfit: 6750,
+      profitMargin: 16.5,
+      breakEvenPoint: 28900,
+      cashRunway: 7,
+      capitalRequired: 0,
+    },
+    createdAt: '2024-03-01T10:00:00Z',
+  },
+  {
+    id: 'sim-002',
+    businessId: 'biz-001',
+    name: 'Growth Scenario',
+    description: '20% revenue lift through expanded hours and menu additions, with moderate cost increase.',
+    inputs: {
+      revenueMultiplier: 1.2,
+      costMultiplier: 1.08,
+      marketingBudget: 2000,
+      staffingCost: 16500,
+      pricePerUnit: 6.5,
+      expectedDemand: 4560,
+      rentCost: 8500,
+    },
+    outputs: {
+      projectedRevenue: 49200,
+      projectedExpenses: 38400,
+      projectedProfit: 10800,
+      profitMargin: 21.9,
+      breakEvenPoint: 28900,
+      cashRunway: 10,
+      capitalRequired: 15000,
+    },
+    createdAt: '2024-03-05T14:00:00Z',
+  },
+  {
+    id: 'sim-003',
+    businessId: 'biz-001',
+    name: 'Lean Operations',
+    description: 'Reduce staffing costs and marketing to extend cash runway.',
+    inputs: {
+      revenueMultiplier: 0.9,
+      costMultiplier: 0.85,
+      marketingBudget: 600,
+      staffingCost: 11500,
+      pricePerUnit: 6.5,
+      expectedDemand: 3420,
+      rentCost: 8500,
+    },
+    outputs: {
+      projectedRevenue: 36900,
+      projectedExpenses: 29100,
+      projectedProfit: 7800,
+      profitMargin: 21.1,
+      breakEvenPoint: 28900,
+      cashRunway: 11,
+      capitalRequired: 0,
+    },
+    createdAt: '2024-03-06T09:00:00Z',
+  },
+];
+
+export const defaultSimulationInputs = mockSimulationScenarios[0].inputs;
