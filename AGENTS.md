@@ -2,6 +2,16 @@
 
 Before implementing features, review the documentation in the docs directory to understand product structure and design intentions.
 
+
+Before implementing features:
+
+- read AGENTS.md
+- read TASK.md
+- review the documentation in the docs directory
+- follow architecture and product rules defined there
+
+Prefer implementation patterns consistent with the latest official documentation of the technologies used in this project.
+
 ## Project identity
 
 This project is a frontend prototype of a Business Operating System for small and medium-sized businesses (SMBs).
@@ -423,6 +433,8 @@ If multiple implementation approaches are possible, choose the solution that is:
 - easier to maintain
 - consistent with React + TypeScript + Redux Toolkit + Material UI
 - appropriate for a modern SaaS application
+
+Prefer patterns consistent with the latest official documentation of React, Redux Toolkit, Material UI, and TypeScript.
 
 ## Final rule
 
