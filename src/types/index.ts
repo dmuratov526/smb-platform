@@ -9,14 +9,91 @@ export type BusinessIndustry =
   | 'digital'
   | 'other';
 
+export type BusinessCategoryKey =
+  | 'restaurant_cafe'
+  | 'salon_barbershop'
+  | 'fitness_studio'
+  | 'cleaning_service'
+  | 'repair_service'
+  | 'healthcare_clinic'
+  | 'education_tutoring'
+  | 'consulting_agency'
+  | 'ecommerce'
+  | 'retail_store'
+  | 'wholesale'
+  | 'marketplace'
+  | 'saas'
+  | 'mobile_app'
+  | 'media_content'
+  | 'ai_tool'
+  | 'design_studio'
+  | 'software_agency'
+  | 'manufacturing'
+  | 'logistics'
+  | 'construction'
+  | 'agriculture'
+  | 'energy'
+  | 'hotel'
+  | 'event_business'
+  | 'travel_service';
+
+export type BusinessStage = 'idea' | 'early' | 'operating';
+
+export type OnboardingFieldType = 'text' | 'select' | 'multiselect' | 'number' | 'textarea';
+
+export interface OnboardingFieldOption {
+  value: string;
+  label: string;
+}
+
+export interface OnboardingField {
+  id: string;
+  label: string;
+  type: OnboardingFieldType;
+  options?: OnboardingFieldOption[];
+  placeholder?: string;
+  required?: boolean;
+  helperText?: string;
+}
+
+export interface OnboardingStepConfig {
+  title: string;
+  description: string;
+  fields: OnboardingField[];
+}
+
+export interface OnboardingDraft {
+  name: string;
+  category: BusinessCategoryKey | '';
+  description: string;
+  stage: BusinessStage | '';
+  location: string;
+  teamSize: string;
+  categoryData: Record<string, string | string[]>;
+}
+
+export interface MockUser {
+  id: string;
+  name: string;
+  title: string;
+  initials: string;
+  avatarColor: string;
+  businessIds: string[];
+}
+
 export interface Business {
   id: string;
   name: string;
   industry: BusinessIndustry;
+  category?: BusinessCategoryKey;
   description: string;
+  stage?: BusinessStage;
   status: BusinessStatus;
   location: string;
+  teamSize?: string;
   logoColor: string;
+  onboardingCompleted?: boolean;
+  categoryData?: Record<string, string | string[]>;
   createdAt: string;
   updatedAt: string;
 }

@@ -4,19 +4,19 @@ import { mockBusinesses } from '../mock/businesses';
 
 interface BusinessState {
   businesses: Business[];
-  activeBusinessId: string;
+  activeBusinessId: string | null;
 }
 
 const initialState: BusinessState = {
   businesses: mockBusinesses,
-  activeBusinessId: mockBusinesses[0].id,
+  activeBusinessId: null,
 };
 
 const businessSlice = createSlice({
   name: 'business',
   initialState,
   reducers: {
-    setActiveBusiness(state, action: PayloadAction<string>) {
+    setActiveBusiness(state, action: PayloadAction<string | null>) {
       state.activeBusinessId = action.payload;
     },
     addBusiness(state, action: PayloadAction<Business>) {

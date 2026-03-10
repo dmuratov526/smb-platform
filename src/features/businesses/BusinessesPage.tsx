@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -17,6 +18,7 @@ import {
 import PageHeader from '../../shared/components/PageHeader';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { setActiveBusiness } from '../../app/businessSlice';
+import { startOnboarding } from '../../app/onboardingSlice';
 import { mockDashboardSummaries } from '../../mock/dashboard';
 
 const industryLabel: Record<string, string> = {
@@ -31,7 +33,19 @@ const industryLabel: Record<string, string> = {
 
 const BusinessesPage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { businesses, activeBusinessId } = useAppSelector((s) => s.business);
+  const { currentUserId, users } = useAppSelector((s) => s.session);
+
+  const currentUser = users.find((u) => u.id === currentUserId);
+  const userBusinesses = businesses.filter((b) =>
+    currentUser?.businessIds.includes(b.id) ?? false
+  );
+
+  const handleNewBusiness = () => {
+    dispatch(startOnboarding());
+    navigate('/onboarding');
+  };
 
   return (
     <Box>
@@ -39,14 +53,14 @@ const BusinessesPage: React.FC = () => {
         title="Businesses"
         description="Manage and switch between your business profiles."
         actions={
-          <Button variant="contained" size="small" startIcon={<AddIcon />}>
+          <Button variant="contained" size="small" startIcon={<AddIcon />} onClick={handleNewBusiness}>
             New Business
           </Button>
         }
       />
 
       <Grid container spacing={2.5}>
-        {businesses.map((biz) => {
+        {userBusinesses.map((biz) => {
           const summary = mockDashboardSummaries.find((s) => s.businessId === biz.id);
           const isActive = biz.id === activeBusinessId;
 
@@ -198,6 +212,7 @@ const BusinessesPage: React.FC = () => {
 
         <Grid item xs={12} md={6} lg={4}>
           <Card
+            onClick={handleNewBusiness}
             sx={{
               height: '100%',
               border: '2px dashed',
@@ -223,16 +238,16 @@ const BusinessesPage: React.FC = () => {
       </Grid>
 
       <Box mt={3}>
-        <Chip label={`${businesses.length} businesses total`} size="small" variant="outlined" />
+        <Chip label={`${userBusinesses.length} businesses total`} size="small" variant="outlined" />
         <Chip
-          label={`${businesses.filter((b) => b.status === 'active').length} active`}
+          label={`${userBusinesses.filter((b) => b.status === 'active').length} active`}
           size="small"
           color="success"
           variant="outlined"
           sx={{ ml: 1 }}
         />
         <Chip
-          label={`${businesses.filter((b) => b.status === 'draft').length} in draft`}
+          label={`${userBusinesses.filter((b) => b.status === 'draft').length} in draft`}
           size="small"
           color="warning"
           variant="outlined"

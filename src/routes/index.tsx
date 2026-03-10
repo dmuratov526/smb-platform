@@ -1,5 +1,5 @@
 import { Navigate, RouteObject } from 'react-router-dom';
-import AppShell from '../layout/AppShell';
+import ProtectedLayout from './ProtectedLayout';
 import BuilderPage from '../features/builder/BuilderPage';
 import SimulatorPage from '../features/simulator/SimulatorPage';
 import PlannerPage from '../features/planner/PlannerPage';
@@ -12,11 +12,15 @@ import TeamPage from '../features/team/TeamPage';
 import AnalyticsPage from '../features/analytics/AnalyticsPage';
 import AIAssistantPage from '../features/ai-assistant/AIAssistantPage';
 import SettingsPage from '../features/settings/SettingsPage';
+import UserSelectPage from '../features/session/UserSelectPage';
+import OnboardingPage from '../features/onboarding/OnboardingPage';
 
 const routes: RouteObject[] = [
+  { path: '/select-user', element: <UserSelectPage /> },
+  { path: '/onboarding', element: <OnboardingPage /> },
   {
     path: '/',
-    element: <AppShell />,
+    element: <ProtectedLayout />,
     children: [
       { index: true, element: <Navigate to="/builder" replace /> },
       { path: 'builder', element: <BuilderPage /> },
