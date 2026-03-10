@@ -2,66 +2,48 @@
 
 ## Current task
 
-Rebuild the Operations page from scratch and implement the first real version of the Operations Workspace.
-
-The current Operations page should be treated as temporary and should be fully replaced.
-
-The application already supports:
-
-- mock user sessions
-- multiple users
-- business creation
-- category-based onboarding
-- active business context
-- Business Builder
-- Business Simulator
-- Launch Planner with task creation, editing, deletion, and phase collapsing
-
-Now the next step is to create a real workspace for managing day-to-day business operations.
+Implement the first real version of the Dashboard for the Business Operating System.
 
 Before implementing, read:
 
 - AGENTS.md
 - documentation in docs/
 
+Assume the application already supports:
+
+- mock user sessions
+- multiple users
+- multiple businesses
+- category-based onboarding
+- active business context
+- Business Builder
+- Business Simulator
+- Launch Planner
+- Operations Workspace
+
+Do NOT rebuild those modules.
+
+This task focuses on implementing the Dashboard as the business control center.
+
 ---
 
 # Goal
 
-Create the first functional version of the Operations Workspace.
+Create the first functional version of the Dashboard.
 
-This page should help the user manage the ongoing operational side of a business after launch planning.
+The Dashboard should act as a central overview of the active business and connect all major modules together.
 
-The Operations page should feel like:
+Users should be able to quickly understand:
 
-- a business operating center
-- a day-to-day execution workspace
-- a place to monitor recurring work, operational issues, and process health
+- what business is active
+- what stage the business is in
+- how the business model currently looks
+- projected performance from simulation
+- launch readiness
+- operational health
+- what needs attention right now
 
-It should NOT feel like:
-
-- a generic admin dashboard
-- a simple to-do list
-- a project management clone
-- a leftover placeholder page
-
-The current Operations page should be replaced with a cleaner, more product-like, more structured implementation.
-
----
-
-# Core product purpose
-
-The Operations Workspace should help a business answer questions such as:
-
-- What needs to happen today or this week to keep the business running?
-- Which recurring operational tasks are coming up?
-- Which operational areas are healthy and which are at risk?
-- What issues or bottlenecks need attention?
-- Which processes are currently active or overloaded?
-
-This is not a full ERP or project management system.
-
-This is version 1 of an SMB operations workspace.
+The Dashboard should feel like a founder control center, not a generic KPI dashboard.
 
 ---
 
@@ -69,320 +51,264 @@ This is version 1 of an SMB operations workspace.
 
 Implement:
 
-- a complete redesign of the Operations page
-- operations data structure
-- Redux state for operations
-- operations overview section
-- recurring tasks section
-- process groups / operational areas
-- issues / bottlenecks section
+- Dashboard page
+- dashboard summary components
+- derived dashboard selectors
+- cross-module summary widgets
+- priority / attention list
+- recommended next step section
 - integration with the active business
-- category-aware default operations content
 
-Use mock data only.
+Use only existing frontend state and mock data.
 
----
-
-# Important reset requirement
-
-The existing Operations page should be cleaned up and rebuilt from scratch.
-
-Requirements:
-
-- remove the current placeholder-style structure
-- remove any temporary layout that does not fit the new operations workspace
-- design the page around the actual product purpose
-- keep reusable pieces only if they clearly fit the new architecture
-
-Do not just patch the existing page.
-Do not simply add more cards onto the old version.
-Re-approach the page as a real product surface.
+No backend.
+No APIs.
+No authentication changes.
+No persistence.
 
 ---
 
-# Product behavior
+# Core dashboard concept
 
-The Operations Workspace should represent how a business runs after setup and launch.
+The Dashboard aggregates information from the core modules:
 
-It should support operational management across a few core dimensions:
+- Business Builder
+- Business Simulator
+- Launch Planner
+- Operations
 
-- recurring work
-- process visibility
-- issue tracking
-- operational status
-- short-term execution priorities
+The Dashboard should NOT duplicate full functionality from those modules.
 
-The page should use the active business and its category as context.
+Instead it should:
 
-Different business categories may have different operational structures and default tasks.
-
----
-
-# Main sections
-
-The Operations page should contain at least these sections.
+- summarize
+- highlight
+- prioritize
+- guide the founder to the next action
 
 ---
 
-## 1. Operations Overview
+# Dashboard sections
 
-Top summary area for the active business.
+The Dashboard should contain the following sections.
 
-This section should quickly communicate the current operational state.
+---
 
-At minimum include:
+## 1. Business overview header
 
-- operational health summary
+Show basic information about the active business.
+
+Include at minimum:
+
+- business name
+- business category
+- business stage
+- short description
+- location if available
+- team size if available
+
+This section should make the page clearly tied to a real business.
+
+---
+
+## 2. Business health summary
+
+Provide a high-level overview of the business condition.
+
+Include summary cards such as:
+
+- builder completeness
+- simulation viability
+- launch readiness
+- operations health
+
+These values can be derived from existing state.
+
+Examples:
+- percentage of builder fields completed
+- projected profit status
+- launch tasks completion percentage
+- open operations issues
+
+---
+
+## 3. Business model snapshot
+
+Provide a compact summary of the Business Builder configuration.
+
+Show short summaries of:
+
+- offer
+- target customer
+- revenue model
+- acquisition strategy
+- operations structure
+- financial snapshot
+
+Include a clear action to open the Business Builder.
+
+---
+
+## 4. Simulation snapshot
+
+Provide a compact summary of the Business Simulator.
+
+Show:
+
+- active scenario
+- projected monthly revenue
+- projected monthly costs
+- operating profit
+- break-even estimate
+- margin
+
+Include a link or action to open the Business Simulator.
+
+---
+
+## 5. Launch progress summary
+
+Provide a summary of Launch Planner progress.
+
+Show:
+
+- launch readiness percentage
+- completed tasks
+- remaining tasks
+- current launch phase
+- next milestone
+
+Include navigation to the Launch Planner.
+
+---
+
+## 6. Operations summary
+
+Provide a quick overview of operations.
+
+Include:
+
+- operations health indicator
 - number of open issues
-- number of recurring tasks due soon
-- number of completed recurring tasks in the current period
-- key focus area or attention-needed area
+- recurring tasks due soon
+- completed recurring tasks
 
-This section should feel like an execution summary, not a financial dashboard.
+Include navigation to the Operations module.
 
 ---
 
-## 2. Operational Areas / Process Groups
+## 7. Priority / attention list
 
-Represent the main areas of ongoing operations.
+Show what requires immediate attention.
 
 Examples:
 
-- Sales Operations
-- Service Delivery
-- Inventory / Supply
-- Customer Support
-- Team Coordination
-- Finance Admin
+- launch tasks due soon
+- open operational issues
+- missing builder sections
+- weak simulation results
+- recurring tasks due today
 
-The exact process groups can vary by category, but the structure should feel relevant to the active business.
-
-Each operational area should include useful lightweight information such as:
-
-- area name
-- short purpose
-- status or health indicator
-- task count or issue count
-- optional owner or responsibility label
-
-This should help the user understand where work is happening.
+This should be a simple prioritized list.
 
 ---
 
-## 3. Recurring Tasks
+## 8. Recommended next step
 
-This is one of the most important parts of the page.
-
-Users should be able to manage recurring operational work.
+Provide a simple recommendation for what the founder should do next.
 
 Examples:
 
-- daily opening checklist
-- weekly inventory check
-- supplier follow-up
-- payroll preparation
-- customer follow-up review
-- equipment inspection
-- weekly performance review
+- complete Business Builder sections
+- review simulation scenarios
+- finish launch preparation
+- resolve operational issue
+- add recurring operational tasks
 
-Each recurring task should support at least:
-
-- title
-- short description
-- frequency
-- status
-- due label or next due label
-- related operational area
-
-Support at minimum:
-
-- viewing recurring tasks
-- updating task status
-- creating recurring tasks
-- editing recurring tasks
-- deleting recurring tasks
-
-Keep this practical and lightweight.
-
-Do not implement advanced scheduling logic.
+This logic can be simple rule-based.
 
 ---
 
-## 4. Issues / Bottlenecks
+# Stage awareness
 
-The page should support tracking operational problems.
+The Dashboard should reflect the business lifecycle:
 
-This is not a bug tracker.
-It is a business operations issue list.
-
-Each issue should support at least:
-
-- title
-- short description
-- severity
-- status
-- related operational area
-- optional owner
+idea → business setup → simulation → launch planning → operations → analytics
 
 Examples:
 
-- delayed supplier shipments
-- low customer response rate
-- insufficient staffing on weekends
-- unstable fulfillment turnaround
-- too many missed follow-ups
+Early stage:
+- highlight builder progress
+- encourage simulation
 
-Support:
+Pre-launch stage:
+- highlight launch readiness
+- show pending setup tasks
 
-- viewing issues
-- creating issues
-- editing issues
-- deleting issues
-- changing status
+Operational stage:
+- highlight operations health
+- show issues and recurring work
 
-Keep the structure simple.
-
----
-
-## 5. Near-term focus
-
-Include a section that helps the user understand immediate execution priorities.
-
-This can be a lightweight section showing things such as:
-
-- due today
-- due this week
-- blocked items
-- highest-priority issues
-
-This does not need a complex prioritization engine.
-
-Simple derived summaries are enough.
+The logic does not need to be complex.
 
 ---
 
 # Category awareness
 
-The Operations Workspace should be category-aware.
+The Dashboard should be aware of the business category.
 
-Different business categories should have different default operational areas and tasks.
+Different categories may slightly influence the emphasis of sections.
 
 Examples:
 
-### Restaurant / Cafe
-Operational areas:
-- Front of House
-- Kitchen
-- Inventory
-- Staffing
-- Supplier Coordination
+Restaurant:
+- inventory readiness
+- staffing readiness
 
-Recurring tasks:
-- opening checklist
-- stock check
-- supplier order review
-- cleaning verification
+SaaS:
+- acquisition assumptions
+- conversion metrics
 
-Issues:
-- ingredient shortage
-- staffing gaps
-- order delays
+Agency:
+- client pipeline
+- delivery capacity
 
-### SaaS
-Operational areas:
-- Customer Support
-- Product Operations
-- Sales Ops
-- Marketing Ops
-- Finance Admin
-
-Recurring tasks:
-- support queue review
-- product analytics review
-- lead pipeline review
-- churn check
-
-Issues:
-- trial-to-paid conversion drop
-- support backlog
-- onboarding friction
-
-### Consulting / Agency
-Operational areas:
-- Client Delivery
-- Sales Pipeline
-- Team Scheduling
-- Finance Admin
-
-Recurring tasks:
-- client check-ins
-- proposal follow-up
-- invoice tracking
-- team capacity review
-
-Issues:
-- delayed deliverables
-- pipeline slowdown
-- overload on key team members
-
-Category adaptation does not need to be deeply complex in v1, but it should clearly exist.
+This can remain lightweight in v1.
 
 ---
 
 # UX expectations
 
-The Operations page must feel intentional and structured.
+The Dashboard should feel like:
 
-Preferred UX direction:
+- a founder command center
+- a business control panel
+- a cross-module overview
 
-- clean top-level summary
-- clear separation between recurring work, operations areas, and issues
-- easy scanning
-- practical editing flows
-- no clutter
-- no excessive enterprise complexity
+Avoid:
 
-The experience should feel like a founder/operator control center.
+- generic KPI dashboards
+- too many widgets
+- chart overload
+- duplicated module screens
 
-The page should be significantly better than a placeholder page and should look like a real core module of the product.
-
----
-
-# Interaction expectations
-
-At minimum, support interactions for:
-
-- creating recurring tasks
-- editing recurring tasks
-- deleting recurring tasks
-- updating recurring task status
-- creating issues
-- editing issues
-- deleting issues
-- updating issue status
-
-If useful, support collapsing sections or grouping, but only if it improves clarity.
-
-Do not add unnecessary interaction complexity.
+Focus on clarity and usefulness.
 
 ---
 
 # State management
 
-Add Redux state for operations.
+Prefer derived state.
 
-The state should support:
+Use selectors to compute dashboard summaries from existing slices:
 
-- operations data per business
-- operational areas
-- recurring tasks
-- issues
-- derived summary values
-- active business integration
+- businesses
+- businessModel
+- businessSimulator
+- launchPlanner
+- operations
 
-Keep it practical.
-
-Avoid building a full workflow engine.
+Avoid duplicating data in a new slice unless necessary.
 
 ---
 
@@ -390,51 +316,28 @@ Avoid building a full workflow engine.
 
 Suggested structure:
 
-src/features/
+src/features/dashboard/
 
-operations/
-- OperationsPage.tsx
-- slice.ts
-- types.ts
+- DashboardPage.tsx
 - selectors.ts
 - utils.ts
-- mock.ts
+- types.ts
 
-components/
-- OperationsOverview.tsx
-- OperationalAreaCard.tsx
-- RecurringTasksSection.tsx
-- RecurringTaskCard.tsx
-- IssuesSection.tsx
-- IssueCard.tsx
-- FocusSummary.tsx
+components:
 
-Keep logic separate from presentation where possible.
+- BusinessOverviewHeader.tsx
+- HealthSummary.tsx
+- BusinessModelSnapshot.tsx
+- SimulationSnapshot.tsx
+- LaunchProgressSummary.tsx
+- OperationsSummary.tsx
+- PriorityList.tsx
+- RecommendedNextStep.tsx
+- DashboardSection.tsx
 
-Avoid one large page component doing everything.
+Keep components modular.
 
----
-
-# Design direction
-
-The page should be visually calmer and more operational than the Dashboard.
-
-It should feel like:
-
-- structured
-- practical
-- execution-focused
-- readable
-- modular
-
-Avoid:
-
-- overly flashy UI
-- too many small meaningless widgets
-- excessive charts
-- generic KPI spam
-
-Prioritize clarity and usefulness.
+Avoid large monolithic components.
 
 ---
 
@@ -443,18 +346,14 @@ Prioritize clarity and usefulness.
 Do NOT implement:
 
 - backend persistence
-- APIs
-- authentication
-- notifications
-- calendars
-- advanced automation rules
-- drag and drop workflow builders
-- dependency engines
-- team permissions
-- enterprise ERP complexity
-- unnecessary libraries
+- API integration
+- real-time updates
+- complex analytics engines
+- heavy chart frameworks
+- AI recommendations
+- new dependencies unless necessary
 
-Focus on a strong Operations Workspace v1.
+Focus on a clear Dashboard v1.
 
 ---
 
@@ -462,14 +361,17 @@ Focus on a strong Operations Workspace v1.
 
 This task is complete when:
 
-- the existing Operations page has been replaced with a new implementation
-- the new page feels like a real operations workspace
-- operations overview exists
-- operational areas are shown
-- recurring tasks are manageable
-- issues / bottlenecks are manageable
-- the page is connected to the active business
-- category-aware default operations content exists
+- Dashboard page exists
+- dashboard integrates active business context
+- business overview header exists
+- business health summary exists
+- business model snapshot exists
+- simulation snapshot exists
+- launch progress summary exists
+- operations summary exists
+- priority list exists
+- recommended next step exists
+- dashboard links to deeper modules
 - architecture is modular and scalable
 
-The result should feel like the first real operational control center inside the Business Operating System.
+The result should feel like a real business control center inside the Business Operating System.
