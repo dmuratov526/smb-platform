@@ -2,7 +2,7 @@ import { Navigate, RouteObject } from 'react-router-dom';
 import ProtectedLayout from './ProtectedLayout';
 import BusinessBuilderPage from '../features/businessBuilder/BusinessBuilderPage';
 import BusinessSimulatorPage from '../features/businessSimulator/BusinessSimulatorPage';
-import PlannerPage from '../features/planner/PlannerPage';
+import LaunchPlannerPage from '../features/launchPlanner/LaunchPlannerPage';
 import DashboardPage from '../features/dashboard/DashboardPage';
 import BusinessesPage from '../features/businesses/BusinessesPage';
 import FinancePage from '../features/finance/FinancePage';
@@ -25,7 +25,7 @@ const routes: RouteObject[] = [
       { index: true, element: <Navigate to="/builder" replace /> },
       { path: 'builder', element: <BusinessBuilderPage /> },
       { path: 'simulator', element: <BusinessSimulatorPage /> },
-      { path: 'planner', element: <PlannerPage /> },
+      { path: 'planner', element: <LaunchPlannerPage /> },
       { path: 'dashboard', element: <DashboardPage /> },
       { path: 'businesses', element: <BusinessesPage /> },
       { path: 'finance', element: <FinancePage /> },

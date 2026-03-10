@@ -2,7 +2,7 @@
 
 ## Current task
 
-Implement the first functional version of the Business Simulator.
+Implement the first functional version of the Launch Planner.
 
 The application already supports:
 
@@ -11,9 +11,10 @@ The application already supports:
 - business creation
 - category-based onboarding
 - active business context
-- Business Builder with editable business model sections
+- Business Builder
+- Business Simulator
 
-Now the next step is to let users simulate how the business may perform based on key assumptions.
+Now the next step is to help users turn a business concept into an executable launch plan.
 
 Before implementing, read:
 
@@ -24,18 +25,20 @@ Before implementing, read:
 
 # Goal
 
-Create the first working version of the Business Simulator.
+Create the first working version of the Launch Planner.
 
-The Business Simulator should allow users to:
+The Launch Planner should help users organize the steps required to launch a business.
 
-- adjust core business assumptions
-- instantly see calculated outcome metrics
-- compare simple business scenarios
-- understand how changes affect revenue, costs, and profit
+Users should be able to:
 
-This should feel like a business simulation workspace, not a spreadsheet clone.
+- view a launch plan
+- track launch readiness
+- manage launch tasks and milestones
+- see progress across major launch areas
 
-The simulator should use the active business and its existing Business Builder data as the starting point.
+This should feel like a launch preparation workspace, not a generic to-do list.
+
+The Launch Planner should use the active business and its existing business category and business model as the starting point.
 
 ---
 
@@ -43,13 +46,13 @@ The simulator should use the active business and its existing Business Builder d
 
 Implement:
 
-- simulator data structure
-- Redux state for simulation inputs and scenarios
-- Business Simulator page
-- editable assumptions panel
-- calculated output cards
-- simple scenario switching or comparison
-- integration with the active business and business model
+- launch planner data structure
+- Redux state for launch planning
+- Launch Planner page
+- launch phases or milestone groups
+- launch task list with statuses
+- readiness summary
+- integration with the active business
 
 Use mock data only.
 
@@ -57,246 +60,242 @@ Use mock data only.
 
 # Product behavior
 
-The simulator should take a business model and let the user test assumptions such as:
+The Launch Planner should help users prepare for launch across several business areas.
 
-- price
-- sales volume
-- conversion rate
-- customer acquisition cost
-- fixed monthly costs
-- variable cost level
-- team cost / operating cost
-- retention or repeat purchase assumptions where relevant
+The planner should support practical launch planning, such as:
 
-The simulator should calculate simplified business outputs.
+- business setup
+- legal and administrative readiness
+- product or service readiness
+- operations readiness
+- marketing readiness
+- launch execution readiness
 
-Do not implement advanced financial modeling yet.
+The exact task content may vary by business category.
+
+Do not implement project management complexity yet.
 
 This is version 1.
 
 ---
 
-# Core simulator concept
+# Core planner concept
 
-The simulator should support a simple input → calculation → output flow.
+The Launch Planner should organize launch preparation into structured areas.
 
-Example logic:
+Suggested model:
 
-inputs
-- average order value or subscription price
-- number of customers or monthly sales
-- conversion rate
-- CAC
-- fixed costs
-- variable costs
-- team/operating costs
+- phases or milestone groups
+- tasks inside each phase
+- status per task
+- readiness summary based on task completion
 
-outputs
-- projected monthly revenue
-- projected monthly costs
-- gross profit
-- operating profit
-- break-even estimate
-- simple margin estimate
+At minimum, task statuses should support:
 
-Calculations can remain simplified and transparent.
-
----
-
-# Simulator sections
-
-The Business Simulator page should contain at least these sections.
-
----
-
-## 1. Scenario selector
-
-Allow the user to work with scenarios.
-
-At minimum support:
-
-- Base Case
-- Best Case
-- Worst Case
-
-The user should be able to switch between them.
+- not started
+- in progress
+- completed
 
 Optional:
-- allow duplicating a scenario later
-- but this is not required for v1
+- blocked
+
+This is not required if it complicates v1 too much.
 
 ---
 
-## 2. Assumptions panel
+# Planner sections
 
-This is where the user edits simulation inputs.
-
-Possible assumption groups:
-
-### Revenue assumptions
-- pricing
-- sales volume
-- number of customers
-- repeat purchases
-- utilization or capacity rate if relevant
-
-### Acquisition assumptions
-- traffic or lead volume
-- conversion rate
-- CAC
-- lead-to-sale assumptions
-
-### Cost assumptions
-- fixed monthly costs
-- variable cost percentage or amount
-- payroll / team cost
-- marketing spend
-- other operating costs
-
-Keep the assumptions practical and limited.
+The Launch Planner page should contain at least these sections.
 
 ---
 
-## 3. Results / output panel
+## 1. Launch readiness summary
 
-Display calculated business outcomes.
+A top-level summary of progress.
 
 At minimum include:
 
-- monthly revenue
-- monthly costs
-- gross profit
-- operating profit
-- break-even point
-- margin
+- overall readiness percentage
+- number of completed tasks
+- number of remaining tasks
+- current phase or nearest milestone
+- category or business type reference
 
-These should be shown clearly using cards or a structured summary layout.
+This should help the user quickly understand launch status.
 
 ---
 
-## 4. Sensitivity / impact cues
+## 2. Milestone groups or phases
 
-The simulator should help users understand what changed.
+Group launch work into a small number of structured phases.
+
+Suggested phases:
+
+- Foundation
+- Offer & Setup
+- Operations Readiness
+- Marketing Readiness
+- Launch Execution
+
+You may rename these if needed, but the structure should feel practical and product-like.
+
+Each phase should contain a set of tasks.
+
+---
+
+## 3. Task management view
+
+Users should be able to view and update launch tasks.
+
+Each task should support at least:
+
+- title
+- short description
+- status
+- optional owner
+- optional due timing label
+- related phase
+
+Users should be able to change task status in the UI.
+
+At minimum, support updating status only.
+
+No need for deep project management logic.
+
+---
+
+## 4. Milestone or timeline cues
+
+The planner should show progression toward launch.
 
 At minimum:
 
-- when assumptions change, outputs update immediately
-- clearly show whether a result improved or worsened relative to the base case or current saved scenario
+- show phases in order
+- show progress per phase
+- make it clear what is upcoming vs complete
 
-Do not overbuild analytics yet.
+This does not need to be a full calendar or Gantt chart.
 
-Simple visual cues are enough.
-
----
-
-# Calculation model
-
-Keep calculations simple and deterministic.
-
-You may implement a simplified formula structure such as:
-
-Revenue:
-- price × number of sales
-or
-- customers × average revenue per customer
-
-Gross Profit:
-- revenue - variable costs
-
-Operating Profit:
-- gross profit - fixed costs - payroll - marketing - other operating costs
-
-Break-even:
-- estimated based on fixed costs and contribution margin
-
-Margin:
-- operating profit / revenue
-
-Exact structure may vary, but the formulas should remain understandable and easy to maintain.
-
-No advanced finance engine is needed.
+Simple timeline or milestone cues are enough.
 
 ---
 
-# Integration with Business Builder
+# Category awareness
 
-The simulator should be seeded from the business model where possible.
+The Launch Planner should be aware of business category.
+
+Different business categories should have different default launch tasks.
 
 Examples:
 
-- pricing defaults from Revenue Model
-- expected sales defaults from Revenue Model
-- acquisition defaults from Acquisition section
-- cost structure hints from Operations / Financial Snapshot
+### Restaurant / Cafe
+- finalize menu
+- source suppliers
+- configure POS
+- hire staff
+- prepare opening promotion
 
-If some fields are missing, use reasonable mock defaults.
+### SaaS
+- finalize MVP scope
+- complete onboarding flow
+- prepare pricing page
+- set up support workflow
+- launch acquisition campaign
 
-The architecture should support tighter Builder → Simulator integration later.
+### Consulting / Agency
+- define service packages
+- prepare proposal templates
+- create lead pipeline
+- set up invoicing
+- prepare website or portfolio
+
+### Retail Store
+- source inventory
+- prepare store layout
+- set up payments
+- launch local promotion
+- train staff
+
+Category variation does not need to be extremely deep in v1, but the system should clearly feel category-aware.
+
+---
+
+# Readiness logic
+
+The Launch Planner should calculate simple readiness indicators.
+
+Examples:
+
+- overall completion percentage
+- phase completion percentage
+- completed vs remaining tasks
+
+This logic can remain simple:
+
+completed tasks / total tasks
+
+You may also surface a simple “launch confidence” summary if useful, but this is optional.
+
+---
+
+# Integration with existing product areas
+
+The Launch Planner should connect conceptually to earlier product surfaces.
+
+Examples:
+
+- business category informs default tasks
+- builder data may inform launch priorities
+- simulator insights may later inform launch timing
+
+For this version, integration can remain light.
+
+The important thing is that the planner feels connected to the active business rather than standalone.
 
 ---
 
 # UX expectations
 
-The Business Simulator should feel like an interactive decision tool.
+The Launch Planner should feel like a structured launch workspace.
 
-It should not look like:
+It should not feel like:
 
-- a raw spreadsheet
-- a finance admin page
-- a generic dashboard
+- a plain checklist app
+- a generic task board
+- an enterprise PM tool
 
 It should feel like:
 
-- a scenario lab
-- a founder planning workspace
-- a business assumptions simulator
+- a founder launch roadmap
+- a business readiness planner
+- an execution preparation workspace
 
 Preferred layout:
 
-- top area with scenario selector and summary
-- left or upper assumptions area
-- right or lower results area
+- top summary / readiness section
+- milestone or phase overview
+- task list grouped by phase
+- ability to update task status easily
 
-Keep the interface clear, structured, and product-like.
-
----
-
-# Scenario behavior
-
-For v1, support at least 3 predefined scenarios:
-
-- Base Case
-- Best Case
-- Worst Case
-
-Each scenario should store its own assumptions.
-
-The user should be able to:
-
-- switch between scenarios
-- edit assumptions inside a scenario
-- see recalculated outputs for that scenario
-
-You may keep this entirely in Redux state.
-
-No persistence is required beyond frontend state.
+Keep the interface structured and product-like.
 
 ---
 
 # State management
 
-Add state for simulation.
+Add state for launch planning.
 
 Responsibilities may include:
 
-- active scenario
-- scenario assumptions
-- calculated outputs
-- relation to active business
+- launch plan per business
+- phases
+- tasks
+- readiness summary
+- active business relationship
 
 Keep this practical.
 
-Avoid overengineering a generic simulation engine.
+Avoid overengineering a full task platform.
 
 ---
 
@@ -306,22 +305,22 @@ Suggested structure:
 
 src/features/
 
-businessSimulator/
-- BusinessSimulatorPage.tsx
+launchPlanner/
+- LaunchPlannerPage.tsx
 - slice.ts
 - types.ts
 - selectors.ts
-- calculations.ts
+- utils.ts
 
 components/
-- ScenarioSelector.tsx
-- AssumptionsPanel.tsx
-- ResultsPanel.tsx
-- MetricCard.tsx
+- ReadinessSummary.tsx
+- PhaseProgress.tsx
+- LaunchTaskList.tsx
+- LaunchTaskCard.tsx
 
-Keep calculation logic separate from UI.
+Keep logic modular.
 
-Keep UI modular.
+Keep UI separate from state logic where possible.
 
 Avoid large monolithic components.
 
@@ -334,14 +333,15 @@ Do NOT implement:
 - backend persistence
 - API integration
 - authentication
-- advanced forecasting
-- time-series modeling
-- Monte Carlo simulation
-- AI recommendations
-- charts-heavy analytics frameworks
+- calendars
+- notifications
+- drag and drop boards
+- team collaboration logic
+- dependencies engine
+- full project management features
 - unnecessary libraries
 
-Focus on a clear v1 simulator.
+Focus on a clear v1 Launch Planner.
 
 ---
 
@@ -349,13 +349,13 @@ Focus on a clear v1 simulator.
 
 This task is complete when:
 
-- Business Simulator page exists
-- the simulator is connected to the active business
-- there are editable assumptions
-- outputs are calculated from those assumptions
-- at least 3 scenarios exist
-- switching scenarios works
-- results update correctly
+- Launch Planner page exists
+- planner is connected to the active business
+- launch phases or milestone groups exist
+- tasks are shown and grouped clearly
+- task statuses can be updated
+- readiness summary is calculated and displayed
+- category-aware default tasks exist
 - architecture is modular and scalable
 
-The result should feel like the first real simulation workspace inside the Business Operating System.
+The result should feel like the first real launch execution workspace inside the Business Operating System.

@@ -31,9 +31,9 @@ import { MockUser } from '../../types';
 
 const UserCard: React.FC<{
   user: MockUser;
-  businessCount: number;
+  userBusinesses: { id: string; name: string; industry: string; logoColor: string }[];
   onSelect: () => void;
-}> = ({ user, businessCount, onSelect }) => {
+}> = ({ user, userBusinesses, onSelect }) => {
   const theme = useTheme();
 
   return (
@@ -41,57 +41,116 @@ const UserCard: React.FC<{
       elevation={0}
       sx={{
         border: `1.5px solid ${theme.palette.divider}`,
-        borderRadius: 3,
-        transition: 'all 0.2s',
+        borderLeft: `4px solid ${user.avatarColor}`,
+        borderRadius: 2.5,
+        overflow: 'hidden',
+        transition: 'all 0.2s ease',
         '&:hover': {
           borderColor: user.avatarColor,
-          boxShadow: `0 4px 20px ${alpha(user.avatarColor, 0.15)}`,
+          boxShadow: `0 6px 32px ${alpha(user.avatarColor, 0.14)}`,
           transform: 'translateY(-2px)',
         },
       }}
     >
-      <CardActionArea onClick={onSelect} sx={{ p: 3 }}>
-        <Box display="flex" alignItems="flex-start" gap={2}>
-          <Avatar
-            sx={{
-              width: 52,
-              height: 52,
-              bgcolor: user.avatarColor,
-              fontSize: '1.1rem',
-              fontWeight: 700,
-              flexShrink: 0,
-            }}
-          >
-            {user.initials}
-          </Avatar>
+      <CardActionArea onClick={onSelect} sx={{ p: 0 }}>
+        <Box display="flex" alignItems="center" px={3} py={2.75} gap={3}>
+          {/* Avatar with online dot */}
+          <Box position="relative" flexShrink={0}>
+            <Avatar
+              sx={{
+                width: 72,
+                height: 72,
+                bgcolor: user.avatarColor,
+                fontSize: '1.4rem',
+                fontWeight: 800,
+                boxShadow: `0 0 0 3px ${alpha(user.avatarColor, 0.15)}`,
+              }}
+            >
+              {user.initials}
+            </Avatar>
+            <Box
+              position="absolute"
+              bottom={3}
+              right={3}
+              width={14}
+              height={14}
+              borderRadius="50%"
+              bgcolor="success.main"
+              border={`2px solid ${theme.palette.background.paper}`}
+            />
+          </Box>
 
+          {/* Info */}
           <Box flex={1} minWidth={0}>
-            <Typography variant="subtitle1" fontWeight={700} gutterBottom>
+            <Typography variant="h6" fontWeight={700} lineHeight={1.25} mb={0.25}>
               {user.name}
             </Typography>
             <Typography variant="body2" color="text.secondary" mb={1.5}>
               {user.title}
             </Typography>
 
-            <Box display="flex" alignItems="center" gap={1} flexWrap="wrap">
-              <Chip
-                label={businessCount === 0 ? 'No businesses yet' : `${businessCount} business${businessCount > 1 ? 'es' : ''}`}
-                size="small"
-                variant="outlined"
-                sx={{
-                  height: 22,
-                  fontSize: '0.7rem',
-                  borderColor: businessCount > 0 ? alpha(user.avatarColor, 0.4) : 'divider',
-                  color: businessCount > 0 ? user.avatarColor : 'text.secondary',
-                }}
-              />
+            {/* Business chips */}
+            <Box display="flex" gap={0.75} flexWrap="wrap">
+              {userBusinesses.length === 0 ? (
+                <Chip
+                  label="No businesses yet"
+                  size="small"
+                  variant="outlined"
+                  sx={{ fontStyle: 'italic', color: 'text.disabled', fontSize: '0.72rem', height: 24 }}
+                />
+              ) : (
+                userBusinesses.map((b) => (
+                  <Chip
+                    key={b.id}
+                    label={b.name}
+                    size="small"
+                    sx={{
+                      height: 24,
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      bgcolor: alpha(b.logoColor, 0.1),
+                      color: b.logoColor,
+                      border: `1px solid ${alpha(b.logoColor, 0.25)}`,
+                      '& .MuiChip-label': { px: 1 },
+                    }}
+                  />
+                ))
+              )}
             </Box>
           </Box>
 
-          <ArrowIcon
-            fontSize="small"
-            sx={{ color: 'text.disabled', mt: 0.5, flexShrink: 0 }}
-          />
+          {/* Enter CTA */}
+          <Box
+            flexShrink={0}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            gap={0.5}
+          >
+            <Box
+              display="flex"
+              alignItems="center"
+              gap={0.75}
+              px={2}
+              py={1}
+              borderRadius={2}
+              bgcolor={alpha(user.avatarColor, 0.08)}
+              border={`1.5px solid ${alpha(user.avatarColor, 0.2)}`}
+              sx={{ transition: 'all 0.15s ease' }}
+            >
+              <Typography
+                variant="body2"
+                fontWeight={700}
+                sx={{ color: user.avatarColor, fontSize: '0.8rem' }}
+              >
+                Enter
+              </Typography>
+              <ArrowIcon sx={{ fontSize: 15, color: user.avatarColor }} />
+            </Box>
+            <Typography variant="caption" color="text.disabled" sx={{ fontSize: '0.65rem' }}>
+              {userBusinesses.length} {userBusinesses.length === 1 ? 'business' : 'businesses'}
+            </Typography>
+          </Box>
         </Box>
       </CardActionArea>
     </Card>
@@ -110,7 +169,10 @@ const UserSelectPage: React.FC = () => {
   const [newTitle, setNewTitle] = useState('');
   const [nameError, setNameError] = useState('');
 
-  const getBusinessCount = (user: MockUser) => user.businessIds.length;
+  const getUserBusinesses = (user: MockUser) =>
+    businesses
+      .filter((b) => user.businessIds.includes(b.id))
+      .map((b) => ({ id: b.id, name: b.name, industry: b.industry, logoColor: b.logoColor }));
 
   const handleSelectUser = (user: MockUser) => {
     dispatch(selectUser(user.id));
@@ -200,7 +262,7 @@ const UserSelectPage: React.FC = () => {
         px={3}
         py={6}
       >
-        <Box width="100%" maxWidth={680}>
+        <Box width="100%" maxWidth={760}>
           {/* Welcome Text */}
           <Box textAlign="center" mb={5}>
             <Typography
@@ -218,17 +280,16 @@ const UserSelectPage: React.FC = () => {
           </Box>
 
           {/* User Cards */}
-          <Grid container spacing={2} mb={3}>
+          <Box display="flex" flexDirection="column" gap={2} mb={3}>
             {users.map((user) => (
-              <Grid item xs={12} sm={6} md={4} key={user.id}>
-                <UserCard
-                  user={user}
-                  businessCount={getBusinessCount(user)}
-                  onSelect={() => handleSelectUser(user)}
-                />
-              </Grid>
+              <UserCard
+                key={user.id}
+                user={user}
+                userBusinesses={getUserBusinesses(user)}
+                onSelect={() => handleSelectUser(user)}
+              />
             ))}
-          </Grid>
+          </Box>
 
           {/* Create New User */}
           <Box display="flex" justifyContent="center" mb={2}>

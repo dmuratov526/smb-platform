@@ -9,7 +9,7 @@ interface BusinessState {
 
 const initialState: BusinessState = {
   businesses: mockBusinesses,
-  activeBusinessId: null,
+  activeBusinessId: mockBusinesses[0]?.id ?? null,
 };
 
 const businessSlice = createSlice({

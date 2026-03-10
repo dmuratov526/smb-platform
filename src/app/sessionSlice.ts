@@ -8,7 +8,7 @@ interface SessionState {
 }
 
 const initialState: SessionState = {
-  currentUserId: null,
+  currentUserId: mockUsers[0].id,
   users: mockUsers,
 };
 

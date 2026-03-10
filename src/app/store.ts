@@ -5,6 +5,7 @@ import sessionReducer from './sessionSlice';
 import onboardingReducer from './onboardingSlice';
 import businessModelReducer from '../features/businessModel/slice';
 import simulatorReducer from '../features/businessSimulator/slice';
+import launchPlannerReducer from '../features/launchPlanner/slice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     onboarding: onboardingReducer,
     businessModel: businessModelReducer,
     simulator: simulatorReducer,
+    launchPlanner: launchPlannerReducer,
   },
 });
 
