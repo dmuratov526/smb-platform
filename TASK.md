@@ -2,20 +2,18 @@
 
 ## Current task
 
-Implement the first functional version of the Business Builder.
+Implement the first functional version of the Business Simulator.
 
 The application already supports:
 
 - mock user sessions
-- user switching
-- multiple businesses per user
-- category-based business onboarding
+- multiple users
+- business creation
+- category-based onboarding
 - active business context
-- application workspace
+- Business Builder with editable business model sections
 
-The next step is to allow users to design and structure their business model.
-
-Business Builder should become the main workspace where a user defines how their business works.
+Now the next step is to let users simulate how the business may perform based on key assumptions.
 
 Before implementing, read:
 
@@ -26,27 +24,18 @@ Before implementing, read:
 
 # Goal
 
-Create the first working version of the Business Builder workspace.
+Create the first working version of the Business Simulator.
 
-The Business Builder should allow users to define the core structure of their business.
+The Business Simulator should allow users to:
 
-The builder will consist of several sections representing parts of a business model:
+- adjust core business assumptions
+- instantly see calculated outcome metrics
+- compare simple business scenarios
+- understand how changes affect revenue, costs, and profit
 
-- Offer
-- Customer
-- Revenue Model
-- Acquisition
-- Operations
-- Financial Snapshot
+This should feel like a business simulation workspace, not a spreadsheet clone.
 
-Users should be able to:
-
-- view the current business model
-- edit fields inside each section
-- store changes in frontend state
-- refine their business configuration over time
-
-This information will later feed the Business Simulator.
+The simulator should use the active business and its existing Business Builder data as the starting point.
 
 ---
 
@@ -54,193 +43,260 @@ This information will later feed the Business Simulator.
 
 Implement:
 
-- Business Model data structure
-- Redux slice for business model state
-- Business Builder page
-- section-based builder architecture
-- editable fields
-- integration with the active business
+- simulator data structure
+- Redux state for simulation inputs and scenarios
+- Business Simulator page
+- editable assumptions panel
+- calculated output cards
+- simple scenario switching or comparison
+- integration with the active business and business model
 
 Use mock data only.
 
 ---
 
-# Business Model structure
+# Product behavior
 
-Introduce a new entity:
+The simulator should take a business model and let the user test assumptions such as:
 
-BusinessModel
+- price
+- sales volume
+- conversion rate
+- customer acquisition cost
+- fixed monthly costs
+- variable cost level
+- team cost / operating cost
+- retention or repeat purchase assumptions where relevant
 
-Example structure:
+The simulator should calculate simplified business outputs.
 
-BusinessModel
-- offer
-- customer
-- revenue
-- acquisition
-- operations
-- financials
+Do not implement advanced financial modeling yet.
 
-Example TypeScript shape:
-
-type BusinessModel = {
-  offer: OfferConfig
-  customer: CustomerConfig
-  revenue: RevenueModel
-  acquisition: AcquisitionModel
-  operations: OperationsModel
-  financials: FinancialSnapshot
-}
-
-Keep this simple for now.
-
-Do not implement complex financial modeling yet.
+This is version 1.
 
 ---
 
-# Builder sections
+# Core simulator concept
 
-The Business Builder should contain six sections.
+The simulator should support a simple input → calculation → output flow.
 
----
+Example logic:
 
-## 1. Offer
+inputs
+- average order value or subscription price
+- number of customers or monthly sales
+- conversion rate
+- CAC
+- fixed costs
+- variable costs
+- team/operating costs
 
-Defines what the business sells.
-
-Possible fields:
-
-- product or service name
-- value proposition
-- key features
-- pricing approach
-
----
-
-## 2. Customer
-
-Defines the target audience.
-
-Possible fields:
-
-- target customer segment
-- customer problem
-- willingness to pay
-- geographic focus
-
----
-
-## 3. Revenue Model
-
-Defines how the business makes money.
-
-Possible fields:
-
-- pricing model
-- revenue streams
-- average transaction value
-- expected sales volume
-
----
-
-## 4. Acquisition
-
-Defines how customers are acquired.
-
-Possible fields:
-
-- marketing channels
-- sales model
-- conversion assumptions
-- estimated acquisition cost
-
----
-
-## 5. Operations
-
-Defines how the business operates.
-
-Possible fields:
-
-- team structure
-- key resources
-- suppliers or partners
-- operational complexity
-- capacity constraints
-
----
-
-## 6. Financial Snapshot
-
-Provides a simplified financial overview.
-
-Possible fields:
-
-- expected monthly revenue
-- expected monthly costs
+outputs
+- projected monthly revenue
+- projected monthly costs
+- gross profit
+- operating profit
 - break-even estimate
-- margin estimate
+- simple margin estimate
 
-Keep financials simple.
+Calculations can remain simplified and transparent.
 
-The detailed calculations will be implemented later in the Business Simulator.
+---
+
+# Simulator sections
+
+The Business Simulator page should contain at least these sections.
+
+---
+
+## 1. Scenario selector
+
+Allow the user to work with scenarios.
+
+At minimum support:
+
+- Base Case
+- Best Case
+- Worst Case
+
+The user should be able to switch between them.
+
+Optional:
+- allow duplicating a scenario later
+- but this is not required for v1
+
+---
+
+## 2. Assumptions panel
+
+This is where the user edits simulation inputs.
+
+Possible assumption groups:
+
+### Revenue assumptions
+- pricing
+- sales volume
+- number of customers
+- repeat purchases
+- utilization or capacity rate if relevant
+
+### Acquisition assumptions
+- traffic or lead volume
+- conversion rate
+- CAC
+- lead-to-sale assumptions
+
+### Cost assumptions
+- fixed monthly costs
+- variable cost percentage or amount
+- payroll / team cost
+- marketing spend
+- other operating costs
+
+Keep the assumptions practical and limited.
+
+---
+
+## 3. Results / output panel
+
+Display calculated business outcomes.
+
+At minimum include:
+
+- monthly revenue
+- monthly costs
+- gross profit
+- operating profit
+- break-even point
+- margin
+
+These should be shown clearly using cards or a structured summary layout.
+
+---
+
+## 4. Sensitivity / impact cues
+
+The simulator should help users understand what changed.
+
+At minimum:
+
+- when assumptions change, outputs update immediately
+- clearly show whether a result improved or worsened relative to the base case or current saved scenario
+
+Do not overbuild analytics yet.
+
+Simple visual cues are enough.
+
+---
+
+# Calculation model
+
+Keep calculations simple and deterministic.
+
+You may implement a simplified formula structure such as:
+
+Revenue:
+- price × number of sales
+or
+- customers × average revenue per customer
+
+Gross Profit:
+- revenue - variable costs
+
+Operating Profit:
+- gross profit - fixed costs - payroll - marketing - other operating costs
+
+Break-even:
+- estimated based on fixed costs and contribution margin
+
+Margin:
+- operating profit / revenue
+
+Exact structure may vary, but the formulas should remain understandable and easy to maintain.
+
+No advanced finance engine is needed.
+
+---
+
+# Integration with Business Builder
+
+The simulator should be seeded from the business model where possible.
+
+Examples:
+
+- pricing defaults from Revenue Model
+- expected sales defaults from Revenue Model
+- acquisition defaults from Acquisition section
+- cost structure hints from Operations / Financial Snapshot
+
+If some fields are missing, use reasonable mock defaults.
+
+The architecture should support tighter Builder → Simulator integration later.
 
 ---
 
 # UX expectations
 
-The Business Builder should feel like a workspace, not a form wizard.
+The Business Simulator should feel like an interactive decision tool.
 
-Structure example:
+It should not look like:
 
-Business Builder
+- a raw spreadsheet
+- a finance admin page
+- a generic dashboard
 
-Offer
-Customer
-Revenue Model
-Acquisition
-Operations
-Financial Snapshot
+It should feel like:
 
-Each section should appear as a card or block with editable fields.
+- a scenario lab
+- a founder planning workspace
+- a business assumptions simulator
 
-Users should be able to edit values and see the updated state.
+Preferred layout:
 
-Keep the layout clean and structured.
+- top area with scenario selector and summary
+- left or upper assumptions area
+- right or lower results area
+
+Keep the interface clear, structured, and product-like.
 
 ---
 
-# Category awareness
+# Scenario behavior
 
-The Business Builder should remain aware of the business category.
+For v1, support at least 3 predefined scenarios:
 
-Different categories may have:
+- Base Case
+- Best Case
+- Worst Case
 
-- different default values
-- hints or recommended fields
+Each scenario should store its own assumptions.
 
-For this version:
+The user should be able to:
 
-- keep category customization minimal
-- focus on building the core architecture
+- switch between scenarios
+- edit assumptions inside a scenario
+- see recalculated outputs for that scenario
 
-The system should allow category-specific customization later.
+You may keep this entirely in Redux state.
+
+No persistence is required beyond frontend state.
 
 ---
 
 # State management
 
-Add a Redux slice responsible for the business model.
+Add state for simulation.
 
-Responsibilities:
+Responsibilities may include:
 
-- load business model for active business
-- update section fields
-- store updates in state
+- active scenario
+- scenario assumptions
+- calculated outputs
+- relation to active business
 
-The model should be tied to the active business.
+Keep this practical.
 
-Avoid complex normalization.
+Avoid overengineering a generic simulation engine.
 
 ---
 
@@ -250,31 +306,24 @@ Suggested structure:
 
 src/features/
 
-businessModel/
+businessSimulator/
+- BusinessSimulatorPage.tsx
 - slice.ts
 - types.ts
 - selectors.ts
-
-businessBuilder/
-- BusinessBuilderPage.tsx
+- calculations.ts
 
 components/
-- BuilderSection.tsx
-- FieldRow.tsx
+- ScenarioSelector.tsx
+- AssumptionsPanel.tsx
+- ResultsPanel.tsx
+- MetricCard.tsx
 
-sections/
-- OfferSection.tsx
-- CustomerSection.tsx
-- RevenueSection.tsx
-- AcquisitionSection.tsx
-- OperationsSection.tsx
-- FinancialSection.tsx
+Keep calculation logic separate from UI.
 
-Keep sections modular.
+Keep UI modular.
 
 Avoid large monolithic components.
-
-Separate UI from state logic where possible.
 
 ---
 
@@ -285,12 +334,14 @@ Do NOT implement:
 - backend persistence
 - API integration
 - authentication
-- AI features
-- business simulation logic
-- advanced validation frameworks
-- large form libraries
+- advanced forecasting
+- time-series modeling
+- Monte Carlo simulation
+- AI recommendations
+- charts-heavy analytics frameworks
+- unnecessary libraries
 
-Focus only on the Business Builder structure.
+Focus on a clear v1 simulator.
 
 ---
 
@@ -298,11 +349,13 @@ Focus only on the Business Builder structure.
 
 This task is complete when:
 
-- Business Builder page exists
-- six builder sections are implemented
-- users can edit fields in each section
-- values are stored in Redux state
-- builder is connected to the active business
+- Business Simulator page exists
+- the simulator is connected to the active business
+- there are editable assumptions
+- outputs are calculated from those assumptions
+- at least 3 scenarios exist
+- switching scenarios works
+- results update correctly
 - architecture is modular and scalable
 
-The result should feel like the first real business design environment inside the Business Operating System.
+The result should feel like the first real simulation workspace inside the Business Operating System.
