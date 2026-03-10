@@ -3,6 +3,7 @@ import businessReducer from './businessSlice';
 import uiReducer from './uiSlice';
 import sessionReducer from './sessionSlice';
 import onboardingReducer from './onboardingSlice';
+import businessModelReducer from '../features/businessModel/slice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     ui: uiReducer,
     session: sessionReducer,
     onboarding: onboardingReducer,
+    businessModel: businessModelReducer,
   },
 });
 

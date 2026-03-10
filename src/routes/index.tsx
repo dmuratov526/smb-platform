@@ -1,6 +1,6 @@
 import { Navigate, RouteObject } from 'react-router-dom';
 import ProtectedLayout from './ProtectedLayout';
-import BuilderPage from '../features/builder/BuilderPage';
+import BusinessBuilderPage from '../features/businessBuilder/BusinessBuilderPage';
 import SimulatorPage from '../features/simulator/SimulatorPage';
 import PlannerPage from '../features/planner/PlannerPage';
 import DashboardPage from '../features/dashboard/DashboardPage';
@@ -23,7 +23,7 @@ const routes: RouteObject[] = [
     element: <ProtectedLayout />,
     children: [
       { index: true, element: <Navigate to="/builder" replace /> },
-      { path: 'builder', element: <BuilderPage /> },
+      { path: 'builder', element: <BusinessBuilderPage /> },
       { path: 'simulator', element: <SimulatorPage /> },
       { path: 'planner', element: <PlannerPage /> },
       { path: 'dashboard', element: <DashboardPage /> },
