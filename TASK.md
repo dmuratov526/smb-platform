@@ -1,403 +1,284 @@
 # TASK.md
 
-## Current task
+## Task
+Redesign the product direction so that the app no longer feels like a generic business management dashboard.
 
-Implement the next major UX and product refinement milestone for the Business Operating System frontend prototype.
+The new primary goal is to make the experience feel like an **AI-powered business operating system**, where the **main screen becomes the central AI entry point** for the whole product.
 
-Before implementing, read:
+This is not a small visual tweak.  
+This is a **product and UX restructuring task**.
 
-- AGENTS.md
-- documentation in docs/
+---
 
-Assume the application already supports:
+## Core Product Direction
 
-- application layout
-- module pages
-- mock user sessions
-- user switching
-- business creation
-- category-based onboarding
-- active business context
+The app should stop feeling like:
+- a collection of separate business admin pages
+- a traditional SaaS dashboard with many modules
+- a generic ERP / CRM / management tool
+
+The app should start feeling like:
+- an **AI Business Command Center**
+- an **AI-first workspace for business thinking and execution**
+- a system where the user starts from **intent**, not from navigation tabs
+
+### Important principle
+Do **not** make this a simple chat screen.
+
+The goal is **not**:
+- “put a chatbot on top of the dashboard”
+
+The goal is:
+- build a **structured AI-first home experience**
+- make AI the **main orchestration layer**
+- let AI route users into Builder / Simulator / Planner / Finance / Operations
+
+---
+
+## Main Objective
+
+Create a **new Home / Main screen** that becomes the true center of the product.
+
+This screen should:
+1. make the product feel modern and differentiated
+2. make AI the first interaction point
+3. reduce the feeling of “too many modules”
+4. reduce excessive vertical scrolling
+5. provide a compact, high-value overview of the business
+6. connect users naturally to the rest of the product
+
+---
+
+## Main Concept
+
+### New Home Screen = AI Business Command Center
+
+The main screen should include:
+
+#### 1. AI Hero Input
+A large, visually strong central input area where the user can type natural requests such as:
+- Describe my business idea
+- Help me launch my business
+- Simulate hiring a new employee
+- Build a pricing strategy
+- Show key risks in my business
+- Help me improve margins
+
+This should feel like the main interaction point of the entire app.
+
+#### 2. Suggested Prompt Actions
+Show several compact prompt chips / quick actions under the input.
+
+Examples:
+- Build my business model
+- Test a pricing scenario
+- Create a launch plan
+- Identify operational bottlenecks
+- Analyze my cost structure
+
+These should look polished, clickable, and compact.
+
+#### 3. Business Health / Snapshot Area
+A high-level compact overview of the active business:
+- business health score
+- readiness level
+- top risks
+- next recommended actions
+- short business summary
+
+This should be concise and scannable.
+
+#### 4. AI-Generated Insight Cards
+Below the hero area, show structured cards that feel actionable, such as:
+- Key Risks
+- Recommended Actions
+- Financial Snapshot
+- Launch Readiness
+- Operational Bottlenecks
+- Growth Opportunities
+
+These should not look like random dashboard widgets.
+They should feel like AI-generated business intelligence blocks.
+
+#### 5. Quick Access to Core Workspaces
+Keep access to major modules, but reposition them as workspaces launched from the AI-centered experience:
 - Business Builder
-- Business Simulator
+- Simulator
 - Launch Planner
-- Operations Workspace
-- Dashboard
+- Finance
+- Operations
 
-This task is not about rebuilding the whole application.
-
-This task focuses on improving the product quality, usability, information density, and visual structure of key core modules.
+These should be secondary to the AI layer, not the main identity of the product.
 
 ---
 
-# Goal
+## UX / Layout Requirements
 
-Refine the product so it feels more like a modern business operating system and less like an early prototype.
+### Critical UX Goal
+The current product has too much vertical stretch in many places.
+The redesign must reduce unnecessary scrolling and make screens feel denser, cleaner, and more modern.
 
-The main goals are:
+### Required UX principles
+- prioritize compactness
+- avoid long stacked sections
+- prefer grid-based layouts on desktop
+- use cards intelligently
+- use progressive disclosure
+- use tabs / segmented controls / collapsible sections where helpful
+- make important information visible above the fold
+- reduce oversized spacing where it hurts usability
+- create strong visual hierarchy
 
-- redesign Business Builder for a better and more polished workspace experience
-- improve Launch Planner so it feels cleaner, tighter, and more usable
-- turn Finance into a more meaningful and structured product surface
-- reduce excessive vertical stretching across pages
-- improve layout efficiency, scanning, and navigation
-- make the UI feel more modern, compact, and product-like
-
-The application should feel more mature, more intentional, and better suited for real desktop use.
-
----
-
-# Main product direction
-
-The product should feel like:
-
-- a business design workspace
-- a structured founder operating system
-- a simulation and execution environment
-- a modern SaaS product built for decision-making
-
-It should NOT feel like:
-
-- a generic admin dashboard
-- a collection of long stacked cards
-- a prototype made of vertically stretched sections
-- a loose set of pages without strong layout discipline
-
-A major focus of this task is improving page structure so users do not need to scroll excessively for basic work.
+### The UI should feel:
+- modern
+- premium
+- clean
+- structured
+- compact
+- AI-native
+- useful, not decorative
 
 ---
 
-# Scope
+## Important Design Direction
 
-Implement a UX and layout refinement pass for the following modules:
+### The product should no longer feel like:
+“dashboard with many pages”
 
+### It should feel more like:
+“AI interface with business workspaces around it”
+
+This is a major conceptual shift.
+
+---
+
+## Scope of Work
+
+### Phase 1 — Main Screen Redesign
+Create or fully redesign the Home screen into the AI Business Command Center.
+
+This is the highest priority.
+
+### Phase 2 — Improve module entry experience
+Make sure the main screen connects naturally to:
+- Builder
+- Simulator
+- Launch Planner
+- Finance
+- Operations
+
+These modules should feel like deeper workspaces opened from the command center.
+
+### Phase 3 — Reduce layout bloat across product
+Audit the current layouts and reduce unnecessary vertical scrolling where possible.
+
+Focus especially on:
 - Business Builder
 - Launch Planner
 - Finance
 
-Also improve shared layout patterns where necessary to support a more compact and modern product experience.
-
-Use mock data only.
-
-Do not add backend, APIs, authentication, or persistence.
+These should feel cleaner, more compact, and more usable.
 
 ---
 
-# Primary design objective
+## Functional Expectations
 
-Reduce unnecessary vertical scrolling.
+The new AI-first screen does not need full backend AI implementation if that is not yet available.
 
-The current product likely contains too many long stacked sections and cards that push important information too far down.
+However, the UI must be built in a way that clearly supports future AI-driven workflows.
 
-The new UX should aim for:
+You may use:
+- mock AI responses
+- placeholder structured insight cards
+- simulated prompt interactions
+- dummy generated business outputs
 
-- more compact page composition
-- better use of horizontal space on desktop
-- clearer grouping of related information
-- tabs, side panels, accordions, segmented views, or split layouts where useful
-- improved scanability
-- fewer oversized blocks
-- less repetitive spacing
-- more intentional information hierarchy
-
-Do not compress the UI so much that it becomes cluttered.
-
-The goal is compact and modern, not cramped.
+But the experience should feel realistic and product-ready.
 
 ---
 
-# 1. Business Builder redesign
+## Do Not
 
-Business Builder is one of the most important modules and should feel like a premium core workspace.
+- do not create a generic chatbot page
+- do not create a plain empty dashboard with a chat box added
+- do not overload the screen with too many widgets
+- do not make sections unnecessarily tall
+- do not keep the old dashboard logic if it conflicts with this new direction
+- do not treat modules as equally primary on the main screen
+- do not design this like a standard admin panel template
 
-The current Business Builder should be redesigned for better usability and visual quality.
+---
 
-## Goals for Business Builder
+## Product Intent to Preserve
 
-- improve the layout and visual structure
-- reduce long vertical scrolling
-- make editing the business model feel smoother and more structured
-- improve section navigation
-- make the builder feel like a real business design workspace
-
-## Required direction
-
-The page should no longer be just a long vertical list of large sections.
-
-Rework it into a more structured layout.
-
-Possible design directions include:
-
-- left-side section navigation with main editing workspace
-- tabbed or segmented section switching
-- two-column desktop layout
-- summary panel + active editing panel
-- progressive disclosure for secondary details
-- compact section cards with inline editing
-- sticky section navigation if useful
-
-The exact solution is flexible, but the result should clearly reduce excessive page length.
-
-## Builder content
-
-The builder still revolves around:
-
-- Offer
-- Customer
-- Revenue Model
-- Acquisition
+The product still includes these core ideas:
+- Business Builder
+- Business Simulator
+- Launch Planner
+- Finance
 - Operations
-- Financial Snapshot
 
-But the UX should feel more organized and efficient.
+But the presentation must evolve.
 
-## Expected outcome
-
-The user should be able to move between business model sections quickly without scrolling through a very long page.
-
-The page should feel more like a structured builder workspace than a stacked form page.
-
----
-
-# 2. Launch Planner refinement
-
-Launch Planner already exists, but it should be improved in usability and layout quality.
-
-## Goals for Launch Planner
-
-- improve visual hierarchy
-- improve launch progress readability
-- reduce page length and repetitive stacking
-- make phases and tasks easier to scan and manage
-- make the module feel more polished and product-like
-
-## Required direction
-
-Rework the page so the user can understand launch status faster.
-
-Possible improvements include:
-
-- compact phase summaries
-- collapsible phase groups
-- better task grouping
-- side-by-side readiness and tasks layout on desktop
-- denser task cards or rows
-- clearer separation between summary and execution views
-- improved filtering or task views if useful
-
-The goal is not to add project-management complexity.
-
-The goal is to make the current Launch Planner cleaner, tighter, and easier to use.
-
-## Expected outcome
-
-The page should feel like a founder launch workspace with strong structure and less wasted vertical space.
+The app should now communicate:
+- business understanding
+- AI guidance
+- action-oriented intelligence
+- strategic and operational clarity
 
 ---
 
-# 3. Finance module refinement
+## Expected Output
 
-Finance should be upgraded from a weaker or placeholder-like module into a more real and useful business surface.
-
-## Goals for Finance
-
-- make Finance feel like a real product module
-- improve structure and visual clarity
-- reduce excessive scrolling
-- introduce a better overview of financial information
-- create a stronger connection between projected and operating finance
-
-## Required direction
-
-Finance should support a more structured layout such as:
-
-- top financial summary
-- compact KPI or metric row
-- transaction or category area
-- breakdown views
-- simple financial organization panels
-- better grouping of data instead of long stacked cards
-
-Possible useful sections:
-
-- revenue summary
-- expense summary
-- monthly result / net result
-- category breakdown
-- recent transactions or mock records
-- budget / cost structure summary
-- financial health snapshot
-
-This does not need to become a full accounting tool.
-
-But it should feel like a meaningful operating module.
-
-## Expected outcome
-
-Finance should look and feel like an important business control surface rather than a placeholder page.
+Implement a polished AI-first main experience that:
+- looks materially better than the current version
+- feels more differentiated from generic business software
+- reduces scroll-heavy layouts
+- creates a stronger product identity
+- makes the whole app feel more like an intelligent operating system
 
 ---
 
-# 4. Shared UX and layout improvements
+## Technical Context
 
-This task is also a product-wide refinement pass for layout behavior and page composition patterns.
-
-Where appropriate, improve shared patterns used across the refined pages.
-
-## Focus areas
-
-- reduce oversized paddings and empty space where they hurt usability
-- improve page headers
-- improve section spacing
-- improve card sizing and density
-- improve desktop information layout
-- use grids more effectively
-- improve consistency across modules
-- reduce repetitive full-width stacked blocks
-- improve action placement
-- improve scanability of important information
-
-You may introduce reusable layout primitives if helpful.
-
-Examples:
-- section shell
-- compact metric row
-- sticky sub-navigation
-- split workspace layout
-- side summary panel
-- dense list row component
-
-Keep this practical and not overengineered.
-
----
-
-# 5. Responsive behavior
-
-The product is desktop-first, but pages must still work well responsively.
-
-The main UX improvement should target desktop efficiency.
-
-Requirements:
-
-- better use of horizontal space on desktop
-- clean fallback behavior on tablet
-- acceptable stacked behavior on smaller screens
-- no broken or overcrowded mobile layouts
-
-Do not design only for mobile.
-Do not keep everything single-column on desktop if that creates unnecessary page length.
-
----
-
-# UX expectations
-
-The refined modules should feel:
-
-- modern
-- cleaner
-- denser in a good way
-- easier to scan
-- more structured
-- more intentional
-- closer to a real SaaS product
-
-Avoid:
-
-- giant cards stacked forever
-- oversized empty spacing
-- excessively stretched forms
-- purely decorative redesigns without UX improvement
-- unnecessary visual complexity
-- too many nested containers
-- overuse of tabs if they reduce clarity
-
-Use good product judgment.
-
----
-
-# Technical expectations
-
-Use the required stack:
-
+Existing stack:
 - React
 - TypeScript
 - Redux Toolkit
 - Material UI
 - Vite
 
-Follow AGENTS.md.
+Work inside the existing project.
+Do not create a separate project.
 
-Use clean modular architecture.
+Before implementation:
+1. Read `AGENTS.md`
+2. Read this `TASK.md`
+3. Review `docs/`
+4. Review `context_project/` for additional frontend and business context
 
-Prefer:
-
-- reusable layout components where appropriate
-- feature-level organization
-- small composable UI components
-- selectors for derived state
-- minimal logic inside page containers
-
-Avoid:
-
-- one giant page component
-- massive duplicated markup
-- hardcoded layout hacks
-- unnecessary dependencies
-- overengineering a design system from scratch
+Use the existing architecture and patterns where appropriate, but do not be afraid to rethink the Home screen and surrounding UX structure if needed.
 
 ---
 
-# Suggested implementation direction
+## Priority Order
 
-This is guidance, not a rigid prescription.
-
-Possible directions:
-
-- redesign Business Builder around section navigation + focused editing area
-- restructure Launch Planner into summary + grouped execution workspace
-- rebuild Finance page into summary + records + breakdown structure
-- create shared UI pieces for:
-  - page section shell
-  - compact metric cards
-  - structured panel headers
-  - dense list/table-like rows
-  - workspace split layouts
-
-You may refactor existing module-level components where needed.
-
-Do not rewrite unrelated modules.
+1. AI-first Home / Main screen
+2. Strong compact layout and reduced vertical scroll
+3. Better UX for Builder / Launch Planner / Finance
+4. Better overall product coherence
+5. Preserve existing architecture where practical
 
 ---
 
-# Out of scope
+## Final Note
 
-Do NOT implement:
+This task is not just about “making the UI prettier”.
 
-- backend persistence
-- APIs
-- authentication
-- real accounting logic
-- advanced financial engine
-- external integrations
-- charts-heavy analytics overhaul across the whole app
-- new design libraries
-- complete rebrand of the application
+It is about shifting the product from:
+**generic business management tool**
 
-This task is about product UX refinement and module quality improvement.
+to:
+**AI-powered business operating system**
 
----
-
-# Definition of done
-
-This task is complete when:
-
-- Business Builder has been redesigned into a more modern and efficient workspace
-- Business Builder requires less excessive scrolling
-- Launch Planner is cleaner, tighter, and easier to scan
-- Finance feels like a real structured module
-- all three modules use space more effectively on desktop
-- vertical stretching is reduced significantly
-- the UI feels more modern and product-like
-- architecture remains modular and scalable
-
-The result should feel like a substantial product-quality upgrade for the Business Operating System frontend.
+The redesign should reflect that clearly.

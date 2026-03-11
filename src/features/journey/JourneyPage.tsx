@@ -9,6 +9,7 @@ import {
   Grid,
   LinearProgress,
   Button,
+  Alert,
 } from '@mui/material';
 import {
   BusinessCenter as BuilderIcon,
@@ -88,12 +89,14 @@ const JourneyPage: React.FC = () => {
   }, [opsState, activeBusinessId]);
 
   /* ── Determine overall journey stage ── */
+  const monitorPct = opsPct > 0 || plannerReadiness.overallPercent >= 70 ? 75 : 0;
+
   const overallPct = Math.round(
-    (builderHealth.completenessPercent * 0.3 +
-      simulatorPct * 0.2 +
-      plannerReadiness.overallPercent * 0.2 +
-      opsPct * 0.15 +
-      75 * 0.15) // dashboard always accessible
+    builderHealth.completenessPercent * 0.3 +
+    simulatorPct * 0.2 +
+    plannerReadiness.overallPercent * 0.2 +
+    opsPct * 0.15 +
+    monitorPct * 0.15
   );
 
   /* ── Stage definitions ── */
@@ -181,9 +184,9 @@ const JourneyPage: React.FC = () => {
         path: '/dashboard',
         color: '#F59E0B',
         ctaLabel: 'Open Dashboard',
-        completionPct: 75,
-        status: 'active',
-        statsLine: 'Dashboard always available',
+        completionPct: monitorPct,
+        status: getStatus(monitorPct, o),
+        statsLine: monitorPct > 0 ? 'Dashboard & analytics available' : 'Complete earlier steps first',
       },
     ];
   }, [builderHealth, simulatorPct, plannerReadiness, opsPct, simulatorState]);
@@ -195,6 +198,19 @@ const JourneyPage: React.FC = () => {
 
   return (
     <Box>
+      {!activeBusiness && (
+        <Alert
+          severity="info"
+          sx={{ mb: 2.5, borderRadius: 2 }}
+          action={
+            <Button size="small" color="inherit" sx={{ fontWeight: 700 }} onClick={() => navigate('/onboarding')}>
+              Create Business
+            </Button>
+          }
+        >
+          No business selected. Create your first business to start tracking your journey progress.
+        </Alert>
+      )}
       {/* ══ Hero ══ */}
       <Box
         mb={4}

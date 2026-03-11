@@ -27,6 +27,7 @@ import {
   SmartToy as AIIcon,
   Tune as SettingsIcon,
   MapOutlined as JourneyIcon,
+  AutoAwesome as CommandIcon,
 } from '@mui/icons-material';
 import { useTheme, alpha } from '@mui/material/styles';
 
@@ -54,17 +55,17 @@ const navSections: NavSection[] = [
   {
     items: [
       {
-        label: 'Business Journey',
-        icon: <JourneyIcon fontSize="small" />,
-        path: '/journey',
-        badge: 'New',
-        badgeColor: 'success',
+        label: 'AI Command Center',
+        icon: <CommandIcon fontSize="small" />,
+        path: '/home',
+        badge: 'AI',
+        badgeColor: 'secondary',
         isPrimary: true,
       },
     ],
   },
   {
-    sectionLabel: 'Core Platform',
+    sectionLabel: 'Build & Validate',
     items: [
       {
         label: 'Business Builder',
@@ -92,6 +93,11 @@ const navSections: NavSection[] = [
   {
     sectionLabel: 'Overview',
     items: [
+      {
+        label: 'Business Journey',
+        icon: <JourneyIcon fontSize="small" />,
+        path: '/journey',
+      },
       {
         label: 'Dashboard',
         icon: <DashboardIcon fontSize="small" />,
@@ -210,9 +216,9 @@ const Sidebar: React.FC = () => {
             <List disablePadding dense>
               {section.items.map((item) => {
                 const active = isActive(item.path);
-                const isJourney = item.path === '/journey';
+                const isCommandCenter = item.path === '/home';
 
-                if (isJourney) {
+                if (isCommandCenter) {
                   return (
                     <ListItem key={item.path} disablePadding sx={{ px: 1.5, mb: 0.5, mt: 0.5 }}>
                       <ListItemButton
@@ -256,9 +262,9 @@ const Sidebar: React.FC = () => {
                             height: 16,
                             fontSize: '0.55rem',
                             fontWeight: 700,
-                            bgcolor: active ? 'rgba(255,255,255,0.25)' : alpha('#10B981', 0.25),
-                            color: active ? '#fff' : '#6EE7B7',
-                            border: `1px solid ${active ? 'rgba(255,255,255,0.3)' : alpha('#10B981', 0.4)}`,
+                            bgcolor: active ? 'rgba(255,255,255,0.25)' : alpha('#8B5CF6', 0.3),
+                            color: active ? '#fff' : '#C4B5FD',
+                            border: `1px solid ${active ? 'rgba(255,255,255,0.3)' : alpha('#8B5CF6', 0.45)}`,
                             '& .MuiChip-label': { px: 0.6 },
                           }}
                         />
