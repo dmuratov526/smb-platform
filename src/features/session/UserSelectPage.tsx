@@ -8,7 +8,6 @@ import {
   CardActionArea,
   Avatar,
   Chip,
-  Divider,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -18,7 +17,6 @@ import {
   InputAdornment,
 } from '@mui/material';
 import {
-  BusinessCenter as BuilderIcon,
   ArrowForward as ArrowIcon,
   PersonAddOutlined as PersonAddIcon,
   BadgeOutlined as TitleIcon,
@@ -212,70 +210,96 @@ const UserSelectPage: React.FC = () => {
     if (e.key === 'Enter') handleCreateUser();
   };
 
+  const features = [
+    { icon: '🏗️', title: 'Business Builder', desc: 'Design your model, revenue streams, team, and strategy in one structured workspace.' },
+    { icon: '📊', title: 'Business Simulator', desc: 'Test financial assumptions. Find your break-even. Validate before you invest.' },
+    { icon: '🚀', title: 'Launch Planner', desc: 'Turn your validated model into an action plan with milestones and task tracking.' },
+    { icon: '⚙️', title: 'Operations Hub', desc: 'Manage daily workflows, recurring tasks, and operational issues post-launch.' },
+    { icon: '💡', title: 'AI Assistant', desc: 'Get contextual business guidance, recommendations, and insights on demand.' },
+    { icon: '📈', title: 'Analytics & Finance', desc: 'Track revenue, expenses, KPIs, and growth trends across your entire business.' },
+  ];
+
   return (
     <>
-    <Box
-      minHeight="100vh"
-      display="flex"
-      flexDirection="column"
-      bgcolor="background.default"
-    >
-      {/* Header */}
+    <Box minHeight="100vh" display="flex" flexDirection="column" bgcolor="#080C14">
+
+      {/* ── Hero section ── */}
       <Box
-        px={4}
-        py={2}
-        display="flex"
-        alignItems="center"
-        bgcolor="background.paper"
-        borderBottom={`1px solid ${theme.palette.divider}`}
+        position="relative"
+        overflow="hidden"
+        sx={{
+          background: 'linear-gradient(160deg, #0F172A 0%, #1E1B4B 50%, #0F172A 100%)',
+          pt: { xs: 6, md: 8 },
+          pb: { xs: 5, md: 7 },
+        }}
       >
-        <Box display="flex" alignItems="center" gap={1.5}>
-          <Box
-            width={36}
-            height={36}
-            borderRadius={2}
-            bgcolor={theme.palette.primary.main}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <BuilderIcon sx={{ fontSize: 20, color: '#fff' }} />
+        {/* Decorative glows */}
+        <Box sx={{ position: 'absolute', top: -120, left: '20%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <Box sx={{ position: 'absolute', bottom: -100, right: '10%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(139,92,246,0.14) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <Box sx={{ position: 'absolute', top: '30%', right: '25%', width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+        <Box maxWidth={900} mx="auto" px={3} position="relative">
+          {/* Logo */}
+          <Box display="flex" alignItems="center" gap={1.5} mb={5}>
+            <Box width={38} height={38} borderRadius={2} sx={{ background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', boxShadow: '0 0 20px rgba(99,102,241,0.5)' }} display="flex" alignItems="center" justifyContent="center">
+              <Typography fontWeight={900} sx={{ color: '#fff', fontSize: '0.75rem', letterSpacing: '0.02em' }}>SMB</Typography>
+            </Box>
+            <Box>
+              <Typography fontWeight={800} sx={{ color: '#F8FAFC', fontSize: '0.95rem', lineHeight: 1.2 }}>SMB Platform</Typography>
+              <Typography sx={{ color: alpha('#94A3B8', 0.7), fontSize: '0.68rem' }}>Business Operating System</Typography>
+            </Box>
           </Box>
-          <Box>
-            <Typography variant="subtitle1" fontWeight={700} lineHeight={1.2}>
-              SMB Platform
+
+          {/* Hero copy */}
+          <Box textAlign="center" mb={2}>
+            <Box display="inline-flex" alignItems="center" gap={1} px={2} py={0.6} mb={3} borderRadius={10}
+              sx={{ background: alpha('#6366F1', 0.15), border: `1px solid ${alpha('#6366F1', 0.3)}` }}>
+              <Box width={6} height={6} borderRadius="50%" bgcolor="#818CF8" sx={{ animation: 'pulse 2s infinite', '@keyframes pulse': { '0%, 100%': { opacity: 1 }, '50%': { opacity: 0.4 } } }} />
+              <Typography sx={{ color: '#A5B4FC', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.06em' }}>
+                YOUR COMPLETE BUSINESS OS
+              </Typography>
+            </Box>
+            <Typography
+              fontWeight={900}
+              sx={{
+                color: '#F8FAFC',
+                fontSize: { xs: '2rem', md: '2.8rem' },
+                lineHeight: 1.15,
+                letterSpacing: '-0.04em',
+                mb: 2,
+                background: 'linear-gradient(135deg, #F8FAFC 30%, #A5B4FC 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Build. Simulate. Launch.<br />Run your business.
             </Typography>
-            <Typography variant="caption" color="text.secondary">
-              Business Operating System
+            <Typography sx={{ color: alpha('#94A3B8', 0.85), fontSize: '1.05rem', maxWidth: 520, mx: 'auto', lineHeight: 1.65 }}>
+              The only platform that takes you from idea to operations — design your model, test assumptions, plan your launch, and manage everything in one place.
             </Typography>
+          </Box>
+
+          {/* Feature pills */}
+          <Box display="flex" flexWrap="wrap" gap={1} justifyContent="center" mt={3.5}>
+            {['Business Builder', 'Financial Simulator', 'Launch Planner', 'Operations Hub', 'AI Assistant', 'Analytics'].map((f) => (
+              <Box key={f} px={1.5} py={0.5} borderRadius={1.5}
+                sx={{ background: alpha('#1E293B', 0.8), border: `1px solid ${alpha('#334155', 0.8)}` }}>
+                <Typography sx={{ color: '#94A3B8', fontSize: '0.72rem', fontWeight: 600 }}>{f}</Typography>
+              </Box>
+            ))}
           </Box>
         </Box>
       </Box>
 
-      {/* Main Content */}
-      <Box
-        flex={1}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        px={3}
-        py={6}
-      >
-        <Box width="100%" maxWidth={760}>
-          {/* Welcome Text */}
-          <Box textAlign="center" mb={5}>
-            <Typography
-              variant="h4"
-              fontWeight={700}
-              mb={1.5}
-              sx={{ letterSpacing: '-0.02em' }}
-            >
-              Welcome back
+      {/* ── Select workspace section ── */}
+      <Box flex={1} py={{ xs: 5, md: 6 }} px={3} sx={{ background: 'linear-gradient(180deg, #0A0F1E 0%, #080C14 100%)' }}>
+        <Box maxWidth={760} mx="auto">
+          <Box textAlign="center" mb={4}>
+            <Typography fontWeight={800} sx={{ color: '#F8FAFC', fontSize: '1.4rem', letterSpacing: '-0.02em', mb: 0.75 }}>
+              Select your workspace
             </Typography>
-            <Typography variant="body1" color="text.secondary" maxWidth={420} mx="auto">
-              Select your workspace to continue, or create a new one. Each workspace has its
-              own businesses and configurations.
+            <Typography sx={{ color: alpha('#94A3B8', 0.7), fontSize: '0.9rem' }}>
+              Each workspace has its own businesses, data, and configurations.
             </Typography>
           </Box>
 
@@ -291,65 +315,48 @@ const UserSelectPage: React.FC = () => {
             ))}
           </Box>
 
-          {/* Create New User */}
-          <Box display="flex" justifyContent="center" mb={2}>
+          {/* Create new */}
+          <Box display="flex" justifyContent="center" mb={6}>
             <Button
               variant="outlined"
               size="medium"
               startIcon={<PersonAddIcon />}
               onClick={handleOpenDialog}
-              sx={{ borderRadius: 2, fontWeight: 600, px: 3 }}
+              sx={{
+                borderRadius: 2, fontWeight: 600, px: 3,
+                borderColor: alpha('#475569', 0.6),
+                color: '#94A3B8',
+                '&:hover': { borderColor: '#6366F1', color: '#A5B4FC', bgcolor: alpha('#6366F1', 0.06) },
+              }}
             >
-              Create New User
+              Create New Workspace
             </Button>
           </Box>
 
-          <Divider sx={{ my: 3 }}>
-            <Typography variant="caption" color="text.disabled" px={1}>
-              OR
+          {/* Feature grid */}
+          <Box mb={2}>
+            <Typography textAlign="center" fontWeight={700} sx={{ color: alpha('#94A3B8', 0.5), fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', mb: 3 }}>
+              Everything you need to run a business
             </Typography>
-          </Divider>
-
-          {/* Product Description */}
-          <Box
-            p={3}
-            borderRadius={2}
-            bgcolor={alpha(theme.palette.primary.main, 0.04)}
-            border={`1px solid ${alpha(theme.palette.primary.main, 0.12)}`}
-          >
-            <Grid container spacing={3} alignItems="center">
-              <Grid item xs={12} md={8}>
-                <Typography variant="subtitle2" fontWeight={700} mb={0.5}>
-                  What is SMB Platform?
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  A Business Operating System that helps you design, simulate, launch, and
-                  manage your business — from initial concept to daily operations. Start by
-                  selecting a workspace above.
-                </Typography>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Box display="flex" flexDirection="column" gap={1}>
-                  {[
-                    'Business Builder',
-                    'Business Simulator',
-                    'Launch Planner',
-                  ].map((feature) => (
-                    <Box key={feature} display="flex" alignItems="center" gap={1}>
-                      <Box
-                        width={6}
-                        height={6}
-                        borderRadius="50%"
-                        bgcolor={theme.palette.primary.main}
-                        flexShrink={0}
-                      />
-                      <Typography variant="caption" fontWeight={500}>
-                        {feature}
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-              </Grid>
+            <Grid container spacing={1.5}>
+              {features.map((f) => (
+                <Grid item xs={12} sm={6} md={4} key={f.title}>
+                  <Box
+                    p={2}
+                    borderRadius={2}
+                    sx={{
+                      background: alpha('#1E293B', 0.5),
+                      border: `1px solid ${alpha('#334155', 0.6)}`,
+                      transition: 'all 0.2s',
+                      '&:hover': { background: alpha('#1E293B', 0.8), borderColor: alpha('#6366F1', 0.3) },
+                    }}
+                  >
+                    <Typography sx={{ fontSize: '1.4rem', mb: 0.75, lineHeight: 1 }}>{f.icon}</Typography>
+                    <Typography fontWeight={700} sx={{ color: '#E2E8F0', fontSize: '0.85rem', mb: 0.4 }}>{f.title}</Typography>
+                    <Typography sx={{ color: alpha('#94A3B8', 0.7), fontSize: '0.75rem', lineHeight: 1.5 }}>{f.desc}</Typography>
+                  </Box>
+                </Grid>
+              ))}
             </Grid>
           </Box>
         </Box>

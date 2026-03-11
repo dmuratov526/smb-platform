@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -12,7 +12,6 @@ import {
 import {
   AddCircleOutline as AddIcon,
   Science as SimulatorIcon,
-  ArrowForward as ArrowIcon,
 } from '@mui/icons-material';
 import { alpha, useTheme } from '@mui/material/styles';
 import PageHeader from '../../shared/components/PageHeader';
@@ -22,12 +21,13 @@ import {
   selectActiveScenario,
   selectBaseScenario,
 } from './selectors';
-import { setActiveScenario, updateAssumptions } from './slice';
+import { setActiveScenario, updateAssumptions, initScenariosForBusiness } from './slice';
 import { computeResults } from './calculations';
 import { SimulatorAssumptions, SimulatorResults } from './types';
 import ScenarioSelector from './components/ScenarioSelector';
 import AssumptionsPanel from './components/AssumptionsPanel';
 import ResultsPanel from './components/ResultsPanel';
+import { generateDefaultScenarios } from './utils';
 
 const BusinessSimulatorPage: React.FC = () => {
   const theme = useTheme();
@@ -81,6 +81,23 @@ const BusinessSimulatorPage: React.FC = () => {
     );
   };
 
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const handleGenerateScenarios = () => {
+    if (!activeBusinessId) return;
+    setIsGenerating(true);
+    const defaultScenarios = generateDefaultScenarios(activeBusinessId);
+    dispatch(initScenariosForBusiness({ businessId: activeBusinessId, scenarios: defaultScenarios }));
+    setTimeout(() => setIsGenerating(false), 300);
+  };
+
+  // Auto-init scenarios on first visit
+  useEffect(() => {
+    if (activeBusinessId && scenarios.length === 0) {
+      handleGenerateScenarios();
+    }
+  }, [activeBusinessId]);
+
   if (!activeBusinessId || !activeBusiness) {
     return (
       <Box>
@@ -129,49 +146,101 @@ const BusinessSimulatorPage: React.FC = () => {
     );
   }
 
-  if (scenarios.length === 0) {
+  if (scenarios.length === 0 && !isGenerating) {
     return (
       <Box>
         <PageHeader
           title="Business Simulator"
           description="Test assumptions and project business outcomes."
         />
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          py={10}
-          textAlign="center"
-        >
-          <Box
-            width={64}
-            height={64}
-            borderRadius={3}
-            bgcolor={alpha(theme.palette.primary.main, 0.08)}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            mb={3}
+        <Box py={6}>
+          <Card
+            elevation={0}
+            sx={{
+              maxWidth: 600,
+              mx: 'auto',
+              border: `2px dashed ${alpha(theme.palette.primary.main, 0.25)}`,
+              borderRadius: 3,
+              background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.03)}, ${alpha(theme.palette.primary.main, 0.01)})`,
+            }}
           >
-            <SimulatorIcon sx={{ fontSize: 32, color: 'primary.main' }} />
-          </Box>
-          <Typography variant="h6" fontWeight={700} mb={1}>
-            No scenarios available
-          </Typography>
-          <Typography variant="body2" color="text.secondary" maxWidth={380} mb={3}>
-            Complete the Business Builder first to generate simulation scenarios based on
-            your business model.
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            startIcon={<ArrowIcon />}
-            onClick={() => navigate('/builder')}
-            sx={{ borderRadius: 2 }}
-          >
-            Go to Business Builder
-          </Button>
+            <CardContent sx={{ p: 4, textAlign: 'center' }}>
+              <Box
+                width={72}
+                height={72}
+                borderRadius={3}
+                mx="auto"
+                mb={3}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                sx={{
+                  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.7)})`,
+                  boxShadow: `0 4px 20px ${alpha(theme.palette.primary.main, 0.3)}`,
+                }}
+              >
+                <SimulatorIcon sx={{ fontSize: 36, color: '#fff' }} />
+              </Box>
+
+              <Typography variant="h5" fontWeight={800} mb={1.5} sx={{ letterSpacing: '-0.02em' }}>
+                Ready to test your business model?
+              </Typography>
+
+              <Typography variant="body1" color="text.secondary" mb={0.75} sx={{ lineHeight: 1.7 }}>
+                The simulator helps you validate assumptions before investing time and money.
+              </Typography>
+              <Typography variant="body2" color="text.secondary" mb={3} sx={{ lineHeight: 1.65 }}>
+                We'll create 3 scenarios (Base, Best, Worst) with default assumptions that you can customize.
+              </Typography>
+
+              <Box display="flex" flexDirection="column" gap={1.5} mb={3}>
+                <Box display="flex" alignItems="center" gap={1.5} px={2} py={1.25} borderRadius={2} bgcolor={alpha(theme.palette.success.main, 0.08)} border={`1px solid ${alpha(theme.palette.success.main, 0.2)}`}>
+                  <Box width={6} height={6} borderRadius="50%" bgcolor="success.main" flexShrink={0} />
+                  <Typography variant="body2" fontWeight={600} color="text.primary" textAlign="left">
+                    Adjust pricing, volume, costs, and acquisition assumptions
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="center" gap={1.5} px={2} py={1.25} borderRadius={2} bgcolor={alpha(theme.palette.info.main, 0.08)} border={`1px solid ${alpha(theme.palette.info.main, 0.2)}`}>
+                  <Box width={6} height={6} borderRadius="50%" bgcolor="info.main" flexShrink={0} />
+                  <Typography variant="body2" fontWeight={600} color="text.primary" textAlign="left">
+                    See instant calculations: revenue, profit, margins, break-even
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="center" gap={1.5} px={2} py={1.25} borderRadius={2} bgcolor={alpha(theme.palette.warning.main, 0.08)} border={`1px solid ${alpha(theme.palette.warning.main, 0.2)}`}>
+                  <Box width={6} height={6} borderRadius="50%" bgcolor="warning.main" flexShrink={0} />
+                  <Typography variant="body2" fontWeight={600} color="text.primary" textAlign="left">
+                    Compare scenarios side-by-side to find the best path forward
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Button
+                variant="contained"
+                size="large"
+                fullWidth
+                startIcon={<AddIcon />}
+                onClick={handleGenerateScenarios}
+                sx={{
+                  borderRadius: 2,
+                  py: 1.5,
+                  fontWeight: 700,
+                  fontSize: '0.95rem',
+                  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.8)})`,
+                  boxShadow: `0 4px 16px ${alpha(theme.palette.primary.main, 0.35)}`,
+                  '&:hover': {
+                    background: theme.palette.primary.main,
+                    boxShadow: `0 6px 20px ${alpha(theme.palette.primary.main, 0.45)}`,
+                  },
+                }}
+              >
+                Generate Default Scenarios
+              </Button>
+
+              <Typography variant="caption" color="text.disabled" display="block" mt={2}>
+                You can customize all assumptions after generation
+              </Typography>
+            </CardContent>
+          </Card>
         </Box>
       </Box>
     );

@@ -14,6 +14,7 @@ import AIAssistantPage from '../features/ai-assistant/AIAssistantPage';
 import SettingsPage from '../features/settings/SettingsPage';
 import UserSelectPage from '../features/session/UserSelectPage';
 import OnboardingPage from '../features/onboarding/OnboardingPage';
+import JourneyPage from '../features/journey/JourneyPage';
 
 const routes: RouteObject[] = [
   { path: '/select-user', element: <UserSelectPage /> },
@@ -22,7 +23,8 @@ const routes: RouteObject[] = [
     path: '/',
     element: <ProtectedLayout />,
     children: [
-      { index: true, element: <Navigate to="/builder" replace /> },
+      { index: true, element: <Navigate to="/journey" replace /> },
+      { path: 'journey', element: <JourneyPage /> },
       { path: 'builder', element: <BusinessBuilderPage /> },
       { path: 'simulator', element: <BusinessSimulatorPage /> },
       { path: 'planner', element: <LaunchPlannerPage /> },

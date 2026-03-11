@@ -3,6 +3,7 @@ import { Box, Toolbar } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
+import GettingStartedChecklist from '../features/journey/GettingStartedChecklist';
 
 const SIDEBAR_WIDTH = 260;
 
@@ -35,6 +36,7 @@ const AppShell: React.FC = () => {
           <Outlet />
         </Box>
       </Box>
+      <GettingStartedChecklist />
     </Box>
   );
 };

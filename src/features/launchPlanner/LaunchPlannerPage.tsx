@@ -232,109 +232,123 @@ const LaunchPlannerPage: React.FC = () => {
         }
       />
 
-      {/* Operations lifecycle callout */}
-      {readiness.overallPercent >= 60 && (
-        <Box
-          mb={2.5}
-          px={2}
-          py={1.5}
-          borderRadius={2}
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          gap={2}
-          bgcolor={alpha(theme.palette.success.main, 0.04)}
-          border={`1px solid ${alpha(theme.palette.success.main, 0.2)}`}
-        >
-          <Box display="flex" alignItems="center" gap={1.5}>
-            <OpsIcon sx={{ fontSize: 18, color: 'success.main', flexShrink: 0 }} />
-            <Box>
-              <Typography variant="body2" fontWeight={600} color="text.primary">
-                {readiness.overallPercent >= 80
-                  ? 'Launch-ready — Operations workspace is active'
-                  : 'Getting close — start setting up day-to-day operations'}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                Completed launch tasks can be promoted to recurring operational work in Operations.
-              </Typography>
-            </Box>
-          </Box>
-          <Button
-            size="small"
-            variant="outlined"
-            color="success"
-            endIcon={<ArrowIcon sx={{ fontSize: 14 }} />}
-            onClick={() => navigate('/operations')}
-            sx={{ borderRadius: 2, flexShrink: 0, fontSize: '0.75rem', height: 30 }}
-          >
-            Go to Operations
-          </Button>
-        </Box>
-      )}
-
       {/* Launch-ready banner */}
       {isReadyToLaunch && (
         <Alert
           severity="success"
           icon={<RocketIcon fontSize="small" />}
-          sx={{ mb: 3 }}
+          sx={{ mb: 2 }}
         >
           <strong>{activeBusiness.name}</strong> is {readiness.overallPercent}% launch ready.
           Complete the remaining tasks and you're good to go live.
         </Alert>
       )}
 
-      {/* Active phase context */}
-      {activePhase && !isReadyToLaunch && (
+      {/* Two-column desktop layout */}
+      <Box
+        display="flex"
+        gap={2.5}
+        alignItems="flex-start"
+        flexDirection={{ xs: 'column', md: 'row' }}
+      >
+        {/* ── Left panel: summary + phase overview (sticky on desktop) ── */}
         <Box
-          mb={3}
-          p={2}
-          borderRadius={2}
-          bgcolor={alpha(theme.palette.primary.main, 0.04)}
-          border={`1px solid ${alpha(theme.palette.primary.main, 0.15)}`}
-          display="flex"
-          alignItems="center"
-          gap={1.5}
+          width={{ xs: '100%', md: 340 }}
+          flexShrink={0}
+          sx={{ position: { md: 'sticky' }, top: { md: 20 } }}
         >
-          <Box
-            width={8}
-            height={8}
-            borderRadius="50%"
-            bgcolor="primary.main"
-            flexShrink={0}
-            sx={{ animation: 'pulse 2s infinite' }}
+          {/* Readiness summary */}
+          <ReadinessSummary readiness={readiness} business={activeBusiness} />
+
+          {/* Phase progress */}
+          <PhaseProgress
+            phaseReadiness={readiness.phaseReadiness}
+            activePhaseIndex={readiness.activePhaseIndex}
           />
-          <Typography variant="body2" color="text.primary">
-            <strong>Currently working on:</strong>{' '}
-            <span style={{ color: theme.palette.primary.main, fontWeight: 600 }}>
-              {activePhase.name}
-            </span>{' '}
-            — {activePhase.description}
-          </Typography>
+
+          {/* Active phase context callout */}
+          {activePhase && !isReadyToLaunch && (
+            <Box
+              mt={1.5}
+              px={1.75}
+              py={1.25}
+              borderRadius={2}
+              bgcolor={alpha(theme.palette.primary.main, 0.04)}
+              border={`1px solid ${alpha(theme.palette.primary.main, 0.15)}`}
+              display="flex"
+              alignItems="flex-start"
+              gap={1.25}
+            >
+              <Box
+                width={7}
+                height={7}
+                borderRadius="50%"
+                bgcolor="primary.main"
+                flexShrink={0}
+                mt={0.6}
+              />
+              <Box>
+                <Typography variant="caption" fontWeight={700} color="text.primary" display="block" sx={{ fontSize: '0.73rem' }}>
+                  Current Phase
+                </Typography>
+                <Typography variant="caption" sx={{ color: 'primary.main', fontWeight: 600, fontSize: '0.73rem' }}>
+                  {activePhase.name}
+                </Typography>
+                <Typography variant="caption" color="text.secondary" display="block" sx={{ fontSize: '0.7rem', mt: 0.25 }}>
+                  {activePhase.description}
+                </Typography>
+              </Box>
+            </Box>
+          )}
+
+          {/* Operations lifecycle link */}
+          {readiness.overallPercent >= 60 && (
+            <Box
+              mt={1.5}
+              px={1.75}
+              py={1.25}
+              borderRadius={2}
+              bgcolor={alpha(theme.palette.success.main, 0.04)}
+              border={`1px solid ${alpha(theme.palette.success.main, 0.18)}`}
+            >
+              <Box display="flex" alignItems="flex-start" gap={1} mb={0.75}>
+                <OpsIcon sx={{ fontSize: 15, color: 'success.main', flexShrink: 0, mt: 0.15 }} />
+                <Typography variant="caption" fontWeight={600} color="text.primary" sx={{ fontSize: '0.73rem' }}>
+                  {readiness.overallPercent >= 80
+                    ? 'Ready for Operations'
+                    : 'Start setting up Operations'}
+                </Typography>
+              </Box>
+              <Button
+                fullWidth
+                size="small"
+                variant="outlined"
+                color="success"
+                endIcon={<ArrowIcon sx={{ fontSize: 13 }} />}
+                onClick={() => navigate('/operations')}
+                sx={{ borderRadius: 1.5, fontSize: '0.72rem', height: 28 }}
+              >
+                Go to Operations
+              </Button>
+            </Box>
+          )}
         </Box>
-      )}
 
-      {/* Readiness summary */}
-      <ReadinessSummary readiness={readiness} business={activeBusiness} />
-
-      {/* Phase progress overview */}
-      <PhaseProgress
-        phaseReadiness={readiness.phaseReadiness}
-        activePhaseIndex={readiness.activePhaseIndex}
-      />
-
-      {/* Task list grouped by phase */}
-      <LaunchTaskList
-        phases={plan.phases}
-        activePhaseIndex={readiness.activePhaseIndex}
-        onTaskStatusChange={handleTaskStatusChange}
-        onTaskEdit={handleTaskEdit}
-        onTaskDelete={handleTaskDelete}
-        onTaskAdd={handleTaskAdd}
-        onPhaseEdit={handlePhaseEdit}
-        onPhaseDelete={handlePhaseDelete}
-        onPhaseAdd={handlePhaseAdd}
-      />
+        {/* ── Right panel: task list ── */}
+        <Box flex={1} minWidth={0}>
+          <LaunchTaskList
+            phases={plan.phases}
+            activePhaseIndex={readiness.activePhaseIndex}
+            onTaskStatusChange={handleTaskStatusChange}
+            onTaskEdit={handleTaskEdit}
+            onTaskDelete={handleTaskDelete}
+            onTaskAdd={handleTaskAdd}
+            onPhaseEdit={handlePhaseEdit}
+            onPhaseDelete={handlePhaseDelete}
+            onPhaseAdd={handlePhaseAdd}
+          />
+        </Box>
+      </Box>
     </Box>
   );
 };

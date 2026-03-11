@@ -5,11 +5,15 @@ import { mockAlerts } from '../mock/dashboard';
 interface UiState {
   sidebarOpen: boolean;
   notifications: Alert[];
+  checklistMinimized: boolean;
+  checklistDismissed: boolean;
 }
 
 const initialState: UiState = {
   sidebarOpen: true,
   notifications: mockAlerts,
+  checklistMinimized: false,
+  checklistDismissed: false,
 };
 
 const uiSlice = createSlice({
@@ -33,6 +37,12 @@ const uiSlice = createSlice({
         n.read = true;
       });
     },
+    setChecklistMinimized(state, action: PayloadAction<boolean>) {
+      state.checklistMinimized = action.payload;
+    },
+    setChecklistDismissed(state, action: PayloadAction<boolean>) {
+      state.checklistDismissed = action.payload;
+    },
   },
 });
 
@@ -41,5 +51,7 @@ export const {
   setSidebarOpen,
   markNotificationRead,
   markAllNotificationsRead,
+  setChecklistMinimized,
+  setChecklistDismissed,
 } = uiSlice.actions;
 export default uiSlice.reducer;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, LinearProgress, Chip, useMediaQuery } from '@mui/material';
+import { Box, Typography, LinearProgress } from '@mui/material';
 import { CheckCircle as CheckIcon } from '@mui/icons-material';
 import { alpha, useTheme } from '@mui/material/styles';
 import { PhaseReadiness } from '../types';
@@ -11,26 +11,20 @@ interface PhaseProgressProps {
 
 const PhaseProgress: React.FC<PhaseProgressProps> = ({ phaseReadiness, activePhaseIndex }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Box
-      mb={3}
-      p={2.5}
+      p={1.75}
       borderRadius={2}
       bgcolor="background.paper"
       border={`1px solid ${theme.palette.divider}`}
     >
-      <Typography variant="subtitle2" fontWeight={700} color="text.primary" mb={2}>
-        Phase Progress
+      <Typography variant="caption" fontWeight={700} color="text.secondary" display="block" mb={1.5}
+        sx={{ fontSize: '0.72rem', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+        Phases
       </Typography>
 
-      <Box
-        display="flex"
-        flexDirection={isMobile ? 'column' : 'row'}
-        gap={isMobile ? 1.5 : 0}
-        position="relative"
-      >
+      <Box display="flex" flexDirection="column" gap={0}>
         {phaseReadiness.map((phase, index) => {
           const isComplete = phase.percent === 100;
           const isActive = index === activePhaseIndex;
@@ -42,154 +36,99 @@ const PhaseProgress: React.FC<PhaseProgressProps> = ({ phaseReadiness, activePha
             ? theme.palette.primary.main
             : theme.palette.text.disabled;
 
-          const phaseBgColor = isComplete
-            ? alpha(theme.palette.success.main, 0.08)
-            : isActive
-            ? alpha(theme.palette.primary.main, 0.08)
-            : alpha(theme.palette.text.secondary, 0.04);
-
-          const phaseBorderColor = isComplete
-            ? alpha(theme.palette.success.main, 0.3)
-            : isActive
-            ? alpha(theme.palette.primary.main, 0.3)
-            : theme.palette.divider;
-
           return (
-            <React.Fragment key={phase.phaseId}>
-              {/* Phase card */}
-              <Box
-                flex={1}
-                p={1.75}
-                borderRadius={1.5}
-                bgcolor={phaseBgColor}
-                border={`1px solid ${phaseBorderColor}`}
-                sx={{
-                  outline: isActive
-                    ? `2px solid ${alpha(theme.palette.primary.main, 0.2)}`
-                    : 'none',
-                  outlineOffset: 1,
-                  transition: 'all 0.15s ease',
-                }}
-              >
+            <Box key={phase.phaseId} display="flex" gap={1.25} position="relative">
+              {/* Timeline stem */}
+              <Box display="flex" flexDirection="column" alignItems="center" flexShrink={0}>
                 <Box
+                  width={22}
+                  height={22}
+                  borderRadius="50%"
                   display="flex"
-                  justifyContent="space-between"
-                  alignItems="flex-start"
-                  mb={1}
+                  alignItems="center"
+                  justifyContent="center"
+                  flexShrink={0}
+                  bgcolor={
+                    isComplete
+                      ? 'success.main'
+                      : isActive
+                      ? 'primary.main'
+                      : alpha(theme.palette.text.secondary, 0.15)
+                  }
                 >
-                  <Box display="flex" alignItems="center" gap={0.75}>
-                    <Box
-                      width={20}
-                      height={20}
-                      borderRadius="50%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      flexShrink={0}
-                      bgcolor={isComplete ? 'success.main' : isActive ? 'primary.main' : 'divider'}
-                    >
-                      {isComplete ? (
-                        <CheckIcon sx={{ fontSize: 12, color: '#fff' }} />
-                      ) : (
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            fontSize: '0.6rem',
-                            fontWeight: 700,
-                            color: isActive ? '#fff' : theme.palette.text.secondary,
-                            lineHeight: 1,
-                          }}
-                        >
-                          {index + 1}
-                        </Typography>
-                      )}
-                    </Box>
-
+                  {isComplete ? (
+                    <CheckIcon sx={{ fontSize: 12, color: '#fff' }} />
+                  ) : (
                     <Typography
-                      variant="caption"
-                      fontWeight={isActive || isComplete ? 700 : 500}
                       sx={{
-                        color: isUpcoming ? 'text.disabled' : 'text.primary',
-                        fontSize: '0.72rem',
+                        fontSize: '0.58rem',
+                        fontWeight: 800,
+                        color: isActive ? '#fff' : theme.palette.text.secondary,
+                        lineHeight: 1,
                       }}
                     >
-                      {phase.name}
+                      {index + 1}
                     </Typography>
-                  </Box>
+                  )}
+                </Box>
+                {index < phaseReadiness.length - 1 && (
+                  <Box
+                    width={2}
+                    flex={1}
+                    minHeight={14}
+                    bgcolor={
+                      isComplete
+                        ? alpha(theme.palette.success.main, 0.3)
+                        : alpha(theme.palette.divider, 1)
+                    }
+                    my={0.4}
+                    borderRadius={1}
+                  />
+                )}
+              </Box>
 
-                  {isActive && !isComplete && (
-                    <Chip
-                      label="Active"
-                      size="small"
-                      color="primary"
-                      sx={{
-                        height: 16,
-                        fontSize: '0.58rem',
-                        fontWeight: 700,
-                        '& .MuiChip-label': { px: 0.75 },
-                      }}
-                    />
-                  )}
-                  {isComplete && (
-                    <Chip
-                      label="Done"
-                      size="small"
-                      color="success"
-                      sx={{
-                        height: 16,
-                        fontSize: '0.58rem',
-                        fontWeight: 700,
-                        '& .MuiChip-label': { px: 0.75 },
-                      }}
-                    />
-                  )}
+              {/* Phase info */}
+              <Box flex={1} minWidth={0} pb={index < phaseReadiness.length - 1 ? 1 : 0}>
+                <Box display="flex" alignItems="center" justifyContent="space-between" mb={0.4}>
+                  <Typography
+                    variant="caption"
+                    fontWeight={isActive || isComplete ? 700 : 500}
+                    noWrap
+                    sx={{
+                      fontSize: '0.74rem',
+                      color: isUpcoming ? 'text.disabled' : 'text.primary',
+                      maxWidth: 140,
+                    }}
+                  >
+                    {phase.name}
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    fontWeight={700}
+                    sx={{ fontSize: '0.68rem', color: phaseColor, flexShrink: 0, ml: 0.5 }}
+                  >
+                    {phase.percent}%
+                  </Typography>
                 </Box>
 
                 <LinearProgress
                   variant="determinate"
                   value={phase.percent}
                   sx={{
-                    height: 4,
+                    height: 3,
                     borderRadius: 2,
-                    mb: 0.75,
+                    mb: 0.4,
                     bgcolor: alpha(phaseColor, 0.12),
-                    '& .MuiLinearProgress-bar': {
-                      bgcolor: phaseColor,
-                      borderRadius: 2,
-                    },
+                    '& .MuiLinearProgress-bar': { bgcolor: phaseColor, borderRadius: 2 },
                   }}
                 />
 
-                <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.65rem' }}>
+                <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.62rem' }}>
                   {phase.completedTasks}/{phase.totalTasks} tasks
                   {phase.inProgressTasks > 0 && ` · ${phase.inProgressTasks} active`}
                 </Typography>
               </Box>
-
-              {/* Connector arrow between phases (desktop only) */}
-              {!isMobile && index < phaseReadiness.length - 1 && (
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  px={0.5}
-                  sx={{ color: theme.palette.divider }}
-                >
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path
-                      d="M1 6h10M7 2l4 4-4 4"
-                      stroke={
-                        index < activePhaseIndex
-                          ? theme.palette.success.main
-                          : theme.palette.divider
-                      }
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Box>
-              )}
-            </React.Fragment>
+            </Box>
           );
         })}
       </Box>
